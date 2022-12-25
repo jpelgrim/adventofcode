@@ -1,0 +1,166 @@
+--part1--positive:z=m[0]+8
+inp z
+add z 8
+--part2--positive:z=z*26+m[1]+16
+inp w
+mul z 26
+add z w
+add z 16
+--part3--positive:z=z*26+m[2]+4
+inp w
+mul z 26
+add z w
+add z 4
+--part4--complex:z=z~/26*((((z%26)-11) == m[3] ? 0 : 1) * 25 + 1)+((((z%26)-11) == m[3] ? 0 : 1) * (m[3] + 1))
+--part4--complex:x=(z%26-11)==m[3] ? 0 : 1
+--part4--complex:z=
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 1
+mul y x
+add z y
+--part5--positive:z=z*26+m[4]+13
+inp w
+mul z 26
+add z w
+add z 13
+--part6--positive:z=z*26+m[5]+5
+inp w
+mul z 26
+add z w
+add z 5
+--part7--positive:z=z*26+m[6]
+inp w
+mul z 26
+add z w
+--part8--complex:z=z~/26*((((z%26)-5) == m[7] ? 0 : 1) * 25 + 1)+((((z%26)-5) == m[7] ? 0 : 1) * (m[3] + 10))
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -5
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+--part9--positive:z=z*26+m[8]+7
+inp w
+mul z 26
+add z w
+add z 7
+--part10--complex:z=z~/26*((z%26 == m[9] ? 0 : 1)*25 + 1)+((z%26 == m[9] ? 0 : 1) * (m[9] + 2))
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+--part11--complex:z=z~/26*(((z%26 - 11) == m[10] ? 0 : 1)*25 + 1)+(((z%26 - 11) == m[10] ? 0 : 1) * (m[10] + 13))
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 13
+mul y x
+add z y
+--part12--complex:z=z~/26*(((z%26 - 13) == m[11] ? 0 : 1)*25 + 1)+(((z%26 - 13) == m[11] ? 0 : 1) * (m[11] + 15))
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -13
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+--part13--complex:z=z~/26*(((z%26 - 13) == m[12] ? 0 : 1)*25 + 1)+(((z%26 - 13) == m[12] ? 0 : 1) * (m[12] + 14))
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -13
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 14
+mul y x
+add z y
+--part14--complex:z=z~/26*(((z%26 - 11) == m[13] ? 0 : 1)*25 + 1)+(((z%26 - 11) == m[13] ? 0 : 1) * (m[13] + 9))
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 9
+mul y x
+add z y
