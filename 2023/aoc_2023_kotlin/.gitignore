@@ -1,0 +1,24 @@
+# Default ignored files
+.DS_Store
+.project
+.settings
+.classpath
+*.iml
+*.log
+atlassian-ide-plugin.xml
+gen-external-apklibs
+bin
+gen
+target
+tmp
+out
+/project.properties
+local.properties
+libraries
+build
+.gradle
+translations-output
+
+.idea/
+!.idea/codeStyles/codeStyleConfig.xml
+!.idea/codeStyles/Project.xml
