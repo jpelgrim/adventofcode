@@ -2,8 +2,11 @@ package day04
 
 import println
 import readLines
+import kotlin.math.pow
 
 private const val DAY = "day04"
+
+// https://adventofcode.com/2023/day/4
 
 fun main() {
     solveDay4()
@@ -28,11 +31,10 @@ fun solveDay4() {
                 .reduce { acc, list -> acc.intersect(list.toSet()).toList() }
 
         // part 1
-        var cardWorth = if (winningNumbers.isNotEmpty()) 1 else 0
-        for (i in 1..<winningNumbers.size) {
-            cardWorth *= 2
-        }
-        solutionPart1 += cardWorth
+        val cardValue = if (winningNumbers.isNotEmpty()) {
+            2.0.pow((winningNumbers.size - 1)).toInt()
+        } else 0
+        solutionPart1 += cardValue
 
         // part 2
         for (i in 1..winningNumbers.size) {
