@@ -11,24 +11,17 @@ fun main() {
 
 fun solveDay6() {
     val input = "$DAY/input_example.txt".readLines()
-    val raceTimes = input[0].substringAfter(":").trim().split(" +".toRegex()).map { it.toInt() }
-    val distancesToBeat =
-        input[1].substringAfter(":").trim().split(" +".toRegex()).map { it.toInt() }
+    val raceTimes = input[0].substringAfter(":").trim().split(" +".toRegex()).map { it.toLong() }
+    val distancesToBeat = input[1].substringAfter(":").trim().split(" +".toRegex()).map { it.toLong() }
     val solutionPart1 = raceTimes.foldIndexed(1) { index, acc, raceTime ->
-        acc * (1..raceTime).map { holdTime ->
-            (raceTime - holdTime) * holdTime
-        }.count {
-            it > distancesToBeat[index]
-        }
+        acc * calculateNrOfWinners(raceTime, distancesToBeat[index])
     }
     "The solution for $DAY part1 is: $solutionPart1".println()
 
     val raceTime = input[0].substringAfter(":").replace(" +".toRegex(), "").toLong()
     val distanceToBeat = input[1].substringAfter(":").replace(" +".toRegex(), "").toLong()
-    val solutionPart2 = (1..raceTime).map { holdTime ->
-        (raceTime - holdTime) * holdTime
-    }.count {
-        it > distanceToBeat
-    }
-    "The solution for $DAY part2 is: $solutionPart2".println()
+    "The solution for $DAY part2 is: ${calculateNrOfWinners(raceTime, distanceToBeat)}".println()
 }
+
+private fun calculateNrOfWinners(raceTime: Long, distanceToBeat: Long) =
+    (1..raceTime).map { holdTime -> (raceTime - holdTime) * holdTime }.count { it > distanceToBeat }
