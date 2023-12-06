@@ -24,4 +24,4 @@ fun solveDay6() {
 }
 
 private fun calculateNrOfWinners(raceTime: Long, distanceToBeat: Long) =
-    (1..raceTime).map { holdTime -> (raceTime - holdTime) * holdTime }.count { it > distanceToBeat }
+    (1..raceTime).count { holdTime -> (raceTime - holdTime) * holdTime > distanceToBeat }
