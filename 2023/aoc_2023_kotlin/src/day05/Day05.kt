@@ -3,7 +3,7 @@ package day05
 import println
 import readLines
 
-private const val DAY = "day05"
+private const val DAY = "day05" // https://adventofcode.com/2023/day/5
 
 fun main() {
     solveDay5()
