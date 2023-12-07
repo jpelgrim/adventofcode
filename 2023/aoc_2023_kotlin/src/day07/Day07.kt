@@ -10,13 +10,9 @@ fun main() {
 }
 
 fun solveDay7() {
-    val inputPart1 = "$DAY/input_example.txt".readLines()
-    val solutionPart1 = solvePart1(inputPart1)
-    "The solution for $DAY part1 is: $solutionPart1".println()
-
-    val inputPart2 = "$DAY/input_example.txt".readLines()
-    val solutionPart2 = solvePart2(inputPart2)
-    "The solution for $DAY part2 is: $solutionPart2".println()
+    val input = "$DAY/input_example.txt".readLines()
+    "The solution for $DAY part1 is: ${solvePart1(input)}".println()
+    "The solution for $DAY part2 is: ${solvePart2(input)}".println()
 }
 
 fun solvePart1(input: List<String>): Int {
