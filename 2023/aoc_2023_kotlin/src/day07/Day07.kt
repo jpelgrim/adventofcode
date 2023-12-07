@@ -104,11 +104,11 @@ private fun Char.cardValuePart2() = when (this) {
 }
 
 private fun String.handType(): Int {
-    // Five of a Kind: Five cards of the same value --> 7
-
-    // Determine if the string contains five of a kind
+    // Extract groups of cards by their denomination
     val cardGroups = this.toCharArray().groupBy { it }
-    if (cardGroups.values.any { it.size == 5 }) return 7 // Five of a Kind
+
+    // Five of a Kind: Five cards of the same value --> 7
+    if (cardGroups.values.any { it.size == 5 }) return 7
 
     // Four of a Kind: Four cards of the same value and one unmatched card --> 6
     if (cardGroups.values.any { it.size == 4 }) return 6
