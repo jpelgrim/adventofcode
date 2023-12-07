@@ -43,8 +43,8 @@ class HandComparatorPart1 : java.util.Comparator<List<String>> {
         val hand1Cards = hand1[0].toCharArray()
         val hand2Cards = hand2[0].toCharArray()
         for (i in 0..<5) {
-            val card1 = hand1Cards[i].cardValuePart1()
-            val card2 = hand2Cards[i].cardValuePart1()
+            val card1 = hand1Cards[i].cardValue()
+            val card2 = hand2Cards[i].cardValue()
             if (card1 > card2) return 1
             if (card1 < card2) return -1
         }
@@ -62,8 +62,8 @@ class HandComparatorPart2 : java.util.Comparator<List<String>> {
         val hand1Cards = hand1[0].toCharArray()
         val hand2Cards = hand2[0].toCharArray()
         for (i in 0..<5) {
-            val card1 = hand1Cards[i].cardValuePart2()
-            val card2 = hand2Cards[i].cardValuePart2()
+            val card1 = if (hand1Cards[i] == 'J') 1 else hand1Cards[i].cardValue()
+            val card2 = if (hand2Cards[i] == 'J') 1 else hand2Cards[i].cardValue()
             if (card1 > card2) return 1
             if (card1 < card2) return -1
         }
@@ -71,36 +71,14 @@ class HandComparatorPart2 : java.util.Comparator<List<String>> {
     }
 }
 
-private fun Char.cardValuePart1() = when (this) {
-    'A' -> 14
-    'K' -> 13
-    'Q' -> 12
-    'J' -> 11
-    'T' -> 10
-    '9' -> 9
-    '8' -> 8
-    '7' -> 7
-    '6' -> 6
-    '5' -> 5
-    '4' -> 4
-    '3' -> 3
-    else -> 2
-}
-
-private fun Char.cardValuePart2() = when (this) {
-    'A' -> 14
-    'K' -> 13
-    'Q' -> 12
-    'J' -> 1
-    'T' -> 10
-    '9' -> 9
-    '8' -> 8
-    '7' -> 7
-    '6' -> 6
-    '5' -> 5
-    '4' -> 4
-    '3' -> 3
-    else -> 2
+private fun Char.cardValue() = when {
+    this.isDigit() -> this - '0'
+    this == 'A' -> 14
+    this == 'K' -> 13
+    this == 'Q' -> 12
+    this == 'J' -> 11
+    this == 'T' -> 10
+    else -> 0
 }
 
 private fun String.handType(): Int {
