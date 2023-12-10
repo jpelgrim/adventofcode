@@ -2,8 +2,9 @@ package day10
 
 import println
 import readLines
+import kotlin.time.measureTime
 
-private const val DAY = "day10"
+private const val DAY = "day10" // https://adventofcode.com/2023/day/10
 
 fun main() {
     solveDay10()
@@ -12,7 +13,8 @@ fun main() {
 fun solveDay10() {
     val input = "$DAY/input_example.txt".readLines()
 
-    val matrix = input.map { it.toCharArray().toMutableList() }
+    var solutionPart1 = 0
+    val matrix = input.map { it.toCharArray().toList() }
     val startPos = matrix.mapIndexed { y, row ->
         row.mapIndexed { x, c ->
             if (c == 'S') Pair(
@@ -20,28 +22,29 @@ fun solveDay10() {
             ) else null
         }
     }.flatten().filterNotNull().first()
-    var solutionPart1 = 0
     val loop = mutableSetOf(startPos)
-    // In my real input for S we can go up or down. Replace this with whatever is needed for your input!
-    var path1 = startPos.first to startPos.second - 1
-    var path2 = startPos.first to startPos.second + 1
-    while (path1 != path2) {
-        path1 = findNextPosition(matrix, path1, loop)
-        path2 = findNextPosition(matrix, path2, loop)
-        loop.add(path1)
-        loop.add(path2)
-        solutionPart1++
-    }
+    measureTime {
+        // In my real input for S we can go up or down. Replace this with whatever is needed for your input!
+        var path1 = startPos.first to startPos.second - 1
+        var path2 = startPos.first to startPos.second + 1
+        while (path1 != path2) {
+            path1 = findNextPosition(matrix, path1, loop)
+            path2 = findNextPosition(matrix, path2, loop)
+            loop.add(path1)
+            loop.add(path2)
+            solutionPart1++
+        }
+    }.also { println("Processing time part 1: $it") }
     "The solution for $DAY part1 is: $solutionPart1".println()
 
-    // Flood fill
     val visited = mutableSetOf<Pair<Int, Int>>()
-    var newPositions =
-        findMatrixBorderPositions(matrix, loop) + findPathOuterBorderPositions(matrix, loop)
-    while (newPositions.isNotEmpty()) {
-        visited.addAll(newPositions)
-        newPositions = findNewPositions(matrix, loop, visited, newPositions)
-    }
+    measureTime {
+        var newPositions = findPathOuterBorderPositions(matrix, loop)
+        while (newPositions.isNotEmpty()) {
+            visited.addAll(newPositions)
+            newPositions = findNewPositions(matrix, loop, visited, newPositions)
+        }
+    }.also { println("Processing time part 2: $it") }
     val width = matrix[0].size
     val height = matrix.size
 
@@ -54,7 +57,7 @@ enum class Direction {
 }
 
 fun findPathOuterBorderPositions(
-    matrix: List<MutableList<Char>>, loop: MutableSet<Pair<Int, Int>>
+    matrix: List<List<Char>>, loop: MutableSet<Pair<Int, Int>>
 ): Set<Pair<Int, Int>> {
     val newPositions = mutableSetOf<Pair<Int, Int>>()
     val startPos = loop.filter { matrix[it.second][it.first] == 'F' }
@@ -67,7 +70,7 @@ fun findPathOuterBorderPositions(
         }
     // Top most F
     var currentPos = startPos.first to startPos.second
-    // We traverse right / clockwise
+    // We traverse the loop to the right, clockwise
     var currentDirection = Direction.UP
     while (true) {
         val x = currentPos.first
@@ -234,23 +237,6 @@ private fun potentialNewPositions(
         if (!loop.contains(downRight)) newPositions.add(downRight)
     }
     return newPositions
-}
-
-private fun findMatrixBorderPositions(
-    matrix: List<List<Char>>, loop: MutableSet<Pair<Int, Int>>
-): Set<Pair<Int, Int>> {
-    val width = matrix[0].size
-    val height = matrix.size
-    val border = mutableSetOf<Pair<Int, Int>>()
-    for (y in 0 until height) {
-        if (!loop.contains(0 to y)) border.add(0 to y)
-        if (!loop.contains(width - 1 to y)) border.add(width - 1 to y)
-    }
-    for (x in 0 until width) {
-        if (!loop.contains(x to 0)) border.add(x to 0)
-        if (!loop.contains(x to height - 1)) border.add(x to height - 1)
-    }
-    return border
 }
 
 private fun findNextPosition(
