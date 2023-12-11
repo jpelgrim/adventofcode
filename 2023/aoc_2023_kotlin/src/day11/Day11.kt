@@ -42,15 +42,10 @@ private fun translateGalaxies(
     emptyColumns: MutableList<Int>,
     emptyRows: MutableList<Int>,
     expansion: Int
-): List<Point> {
-    val translatedGalaxies = galaxies.map { point ->
-        val x = point.x
-        val y = point.y
-        val translateX = emptyColumns.count { it < x } * (expansion - 1)
-        val translateY = emptyRows.count { it < y } * (expansion - 1)
-        Point(x + translateX, y + translateY)
-    }
-    return translatedGalaxies
+) = galaxies.map { point ->
+    val translateX = emptyColumns.count { it < point.x } * (expansion - 1)
+    val translateY = emptyRows.count { it < point.y } * (expansion - 1)
+    Point(point.x + translateX, point.y + translateY)
 }
 
 private fun manhattanDistances(translatedGalaxies: List<Point>): MutableList<Long> {
