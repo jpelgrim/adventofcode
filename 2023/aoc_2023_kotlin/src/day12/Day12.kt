@@ -20,11 +20,10 @@ fun solveDay12() {
 
     val solutionPart2 = input.sumOf { line ->
         val (arrangement, patternString) = line.split(" ")
-        val newPatternString =
-            "$patternString,$patternString,$patternString,$patternString,$patternString"
+        val newPatternString = "$patternString,".repeat(5).dropLast(1)
         val pattern = newPatternString.split(",").map { it.toInt() }
         // Make a new string of "arrangement" as five copies of itself, separated by a "?" character
-        val newArrangement = "$arrangement?$arrangement?$arrangement?$arrangement?$arrangement"
+        val newArrangement = "$arrangement?".repeat(5).dropLast(1)
         findPossibleArrangements(newArrangement, pattern)
     }
     "The solution for $DAY part2 is: $solutionPart2".println()
@@ -46,14 +45,11 @@ fun findPossibleArrangements(arrangement: String, pattern: List<Int>): Long {
                 } else if (firstMatch.length > firstGroupSize && firstMatch.indexOf("#".repeat(firstGroupSize + 1)) == 0) {
                     return@getOrPut 0
                 }
-                if (arrangement.contains("?")) {
-                    return@getOrPut possibleArrangements(
-                        arrangement.replaceFirst("?", "."), pattern
-                    ) + possibleArrangements(
-                        arrangement.replaceFirst("?", "#"), pattern
-                    )
-                }
-                return@getOrPut 0
+                return@getOrPut possibleArrangements(
+                    arrangement.replaceFirst("?", "."), pattern
+                ) + possibleArrangements(
+                    arrangement.replaceFirst("?", "#"), pattern
+                )
             }
         return possibleArrangements(arrangement, pattern)
     }
