@@ -39,17 +39,11 @@ fun findPossibleArrangements(arrangement: String, pattern: List<Int>): Long {
                 val match = Regex("([#?]+)").find(arrangement) ?: return@getOrPut 0
                 val firstMatch = match.groupValues[0]
                 if (firstMatch.length == firstGroupSize && firstMatch.all { it == '#' }) {
-                    val newArrangement =
-                        arrangement.replaceFirst(firstMatch, "").drop(1).dropWhile { it == '.' }
+                    val newArrangement = arrangement.replaceFirst(firstMatch, "").drop(1).dropWhile { it == '.' }
                     return@getOrPut possibleArrangements(newArrangement, pattern.drop(1))
                 } else if (firstMatch.length < firstGroupSize && firstMatch.contains("#")) {
                     return@getOrPut 0
-                } else if (firstMatch.length > firstGroupSize && firstMatch.indexOf(
-                        "#".repeat(
-                            firstGroupSize + 1
-                        )
-                    ) == 0
-                ) {
+                } else if (firstMatch.length > firstGroupSize && firstMatch.indexOf("#".repeat(firstGroupSize + 1)) == 0) {
                     return@getOrPut 0
                 }
                 if (arrangement.contains("?")) {
