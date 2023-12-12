@@ -10,25 +10,57 @@ fun main() {
 }
 
 fun solveDay12() {
-    val inputPart1 =
-        "$DAY/part1_example.txt"
-//        "$DAY/part1.txt"
-            .readLines()
-    val solutionPart1 = solvePart1(inputPart1)
+    val input = "$DAY/input_example.txt".readLines()
+    val solutionPart1 = input.sumOf { line ->
+        val (arrangement, patternString) = line.split(" ")
+        val pattern = patternString.split(",").map { it.toInt() }
+        findPossibleArrangements(arrangement, pattern)
+    }
     "The solution for $DAY part1 is: $solutionPart1".println()
 
-    val inputPart2 =
-        "$DAY/part2_example.txt"
-//        "$DAY/part2.txt"
-            .readLines()
-    val solutionPart2 = solvePart2(inputPart2)
+    val solutionPart2 = input.sumOf { line ->
+        val (arrangement, patternString) = line.split(" ")
+        val newPatternString =
+            "$patternString,$patternString,$patternString,$patternString,$patternString"
+        val pattern = newPatternString.split(",").map { it.toInt() }
+        // Make a new string of "arrangement" as five copies of itself, separated by a "?" character
+        val newArrangement = "$arrangement?$arrangement?$arrangement?$arrangement?$arrangement"
+        findPossibleArrangements(newArrangement, pattern)
+    }
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
 
-fun solvePart1(input: List<String>): Int {
-    TODO()
-}
-
-fun solvePart2(input: List<String>): Int {
-    TODO()
+fun findPossibleArrangements(arrangement: String, pattern: List<Int>): Long {
+    buildMap {
+        fun possibleArrangements(arrangement: String, pattern: List<Int>): Long =
+            getOrPut(arrangement to pattern) {
+                if (pattern.isEmpty()) return@getOrPut if (arrangement.none { it == '#' }) 1 else 0
+                val firstGroupSize = pattern.first()
+                val match = Regex("([#?]+)").find(arrangement) ?: return@getOrPut 0
+                val firstMatch = match.groupValues[0]
+                if (firstMatch.length == firstGroupSize && firstMatch.all { it == '#' }) {
+                    val newArrangement =
+                        arrangement.replaceFirst(firstMatch, "").drop(1).dropWhile { it == '.' }
+                    return@getOrPut possibleArrangements(newArrangement, pattern.drop(1))
+                } else if (firstMatch.length < firstGroupSize && firstMatch.contains("#")) {
+                    return@getOrPut 0
+                } else if (firstMatch.length > firstGroupSize && firstMatch.indexOf(
+                        "#".repeat(
+                            firstGroupSize + 1
+                        )
+                    ) == 0
+                ) {
+                    return@getOrPut 0
+                }
+                if (arrangement.contains("?")) {
+                    return@getOrPut possibleArrangements(
+                        arrangement.replaceFirst("?", "."), pattern
+                    ) + possibleArrangements(
+                        arrangement.replaceFirst("?", "#"), pattern
+                    )
+                }
+                return@getOrPut 0
+            }
+        return possibleArrangements(arrangement, pattern)
+    }
 }
