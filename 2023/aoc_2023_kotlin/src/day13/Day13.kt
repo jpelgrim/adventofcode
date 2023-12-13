@@ -16,14 +16,14 @@ fun solveDay13() {
 }
 
 fun solvePart1(matrices: List<List<String>>) = matrices.sumOf { listOfRows ->
-    findMirrorIndex(listOfRows).let {  if (it > 0) return@sumOf it * 100 }
-    findMirrorIndex(transpose(listOfRows)).let {  if (it > 0) return@sumOf it }
+    findMirrorIndex(listOfRows).let { if (it > 0) return@sumOf it * 100 }
+    findMirrorIndex(transpose(listOfRows)).let { if (it > 0) return@sumOf it }
     return@sumOf 0
 }
 
 fun solvePart2(matrices: List<List<String>>) = matrices.sumOf { listOfRows ->
-    findMirrorIndexFuzzy(listOfRows).let {  if (it > 0) return@sumOf it * 100 }
-    findMirrorIndexFuzzy(transpose(listOfRows)).let {  if (it > 0) return@sumOf it }
+    findMirrorIndexFuzzy(listOfRows).let { if (it > 0) return@sumOf it * 100 }
+    findMirrorIndexFuzzy(transpose(listOfRows)).let { if (it > 0) return@sumOf it }
     return@sumOf 0
 }
 
