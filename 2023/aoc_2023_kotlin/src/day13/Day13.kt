@@ -17,27 +17,18 @@ fun solveDay13() {
 
 fun solvePart1(matrices: List<List<String>>) = matrices.sumOf { listOfRows ->
     findMirrorIndex(listOfRows).let { if (it > 0) return@sumOf it * 100 }
-    findMirrorIndex(transpose(listOfRows)).let { if (it > 0) return@sumOf it }
+    findMirrorIndex(listOfRows.transposed()).let { if (it > 0) return@sumOf it }
     return@sumOf 0
 }
 
 fun solvePart2(matrices: List<List<String>>) = matrices.sumOf { listOfRows ->
     findMirrorIndexFuzzy(listOfRows).let { if (it > 0) return@sumOf it * 100 }
-    findMirrorIndexFuzzy(transpose(listOfRows)).let { if (it > 0) return@sumOf it }
+    findMirrorIndexFuzzy(listOfRows.transposed()).let { if (it > 0) return@sumOf it }
     return@sumOf 0
 }
 
-fun transpose(list: List<String>): List<String> {
-    val transposed = mutableListOf<String>()
-    val width = list[0].length
-    for (i in 0..<width) {
-        val sb = StringBuilder()
-        for (j in list.indices) {
-            sb.append(list[j][i])
-        }
-        transposed.add(sb.toString())
-    }
-    return transposed
+fun List<String>.transposed() = first().indices.map {
+    buildString { for (line in this@transposed) append(line[it]) }
 }
 
 private fun findMirrorIndex(
