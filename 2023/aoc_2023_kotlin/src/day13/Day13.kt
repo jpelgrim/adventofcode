@@ -16,14 +16,14 @@ fun solveDay13() {
 }
 
 fun solvePart1(matrices: List<List<String>>) = matrices.sumOf { listOfRows ->
-    findMirrorIndex(listOfRows).let { if (it > 0) return@sumOf it * 100 }
-    findMirrorIndex(listOfRows.transposed()).let { if (it > 0) return@sumOf it }
+    findMirrorIndexFuzzy(listOfRows).let { if (it > 0) return@sumOf it * 100 }
+    findMirrorIndexFuzzy(listOfRows.transposed()).let { if (it > 0) return@sumOf it }
     return@sumOf 0
 }
 
 fun solvePart2(matrices: List<List<String>>) = matrices.sumOf { listOfRows ->
-    findMirrorIndexFuzzy(listOfRows).let { if (it > 0) return@sumOf it * 100 }
-    findMirrorIndexFuzzy(listOfRows.transposed()).let { if (it > 0) return@sumOf it }
+    findMirrorIndexFuzzy(listOfRows, 1).let { if (it > 0) return@sumOf it * 100 }
+    findMirrorIndexFuzzy(listOfRows.transposed(), 1).let { if (it > 0) return@sumOf it }
     return@sumOf 0
 }
 
@@ -31,25 +31,9 @@ fun List<String>.transposed() = first().indices.map {
     buildString { for (line in this@transposed) append(line[it]) }
 }
 
-private fun findMirrorIndex(
-    list: List<String>,
-): Int {
-    (1..<list.size).forEach { index ->
-        var matchFound = true
-        for (i in 0..index) {
-            if (index + i >= list.size || index - i - 1 < 0) break
-            if (list[index + i] != list[index - i - 1]) {
-                matchFound = false
-                break
-            }
-        }
-        if (matchFound) return index
-    }
-    return 0
-}
-
 private fun findMirrorIndexFuzzy(
     list: List<String>,
+    fuzziness: Int = 0,
 ): Int {
     (1..<list.size).forEach { index ->
         var charsDifferent = 0
@@ -57,7 +41,7 @@ private fun findMirrorIndexFuzzy(
             if (index + i >= list.size || index - i - 1 < 0) break
             charsDifferent += charsDifferent(list[index + i], list[index - i - 1])
         }
-        if (charsDifferent == 1) return index
+        if (charsDifferent == fuzziness) return index
     }
     return 0
 }
