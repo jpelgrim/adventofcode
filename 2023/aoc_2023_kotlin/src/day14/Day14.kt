@@ -29,39 +29,36 @@ fun solveDay14() {
     "The solution for $DAY part1 is: $solutionPart1".println()
 
     val totalLoadsForIndex = mutableMapOf<Int, Int>()
-    val cycleLength: Int
-    val cycleStart: Int
-    var index = 0
-    while (true) {
-        val rolledNorthRocks = roleNorth(roundedRocks, cubeShapedRocks)
-        val rolledWestRocks = roleWest(rolledNorthRocks, cubeShapedRocks)
-        val rolledSouthRocks = roleSouth(rolledWestRocks, cubeShapedRocks, height)
-        val rolledEastRocks = roleEast(rolledSouthRocks, cubeShapedRocks, width)
-        roundedRocks.clear()
-        roundedRocks.addAll(rolledEastRocks)
-        val totalLoad = roundedRocks.sumOf { height - it.y }
-        if (index < 200) {
-            totalLoadsForIndex[totalLoad] = index
-        } else {
-            if (totalLoadsForIndex[totalLoad] != null) {
-                val previousIndex = totalLoadsForIndex[totalLoad]!!
-                cycleLength = index - previousIndex
-                cycleStart = previousIndex - cycleLength
-                break
-            } else {
-                totalLoadsForIndex[totalLoad] = index
+    var rotatedRocks = roundedRocks.toList()
+    val maxSpins = 1000000000
+    for (index in 1..maxSpins) {
+        rotatedRocks = fullRotation(rotatedRocks, cubeShapedRocks, width, height)
+        val totalLoad = rotatedRocks.sumOf { height - it.y }
+        val previousIndex = totalLoadsForIndex.getOrPut(totalLoad) { index }
+        // We use a lower bound of 200 to avoid false cycles on the example input
+        // Note: This lower bound is NOT needed on the full input‼️
+        if (previousIndex != index && index > 200) {
+            // We've found a cycle
+            val cycle = index - previousIndex
+            // Continue for the remaining spins as if we were near the end of the max spins requirement
+            repeat((maxSpins - index) % cycle) {
+                rotatedRocks = fullRotation(rotatedRocks, cubeShapedRocks, width, height)
             }
+            break
         }
-        index++
     }
-    var solutionIndex = 1000000000 % cycleLength
-    while (solutionIndex < cycleStart + cycleLength) {
-        solutionIndex += cycleLength
-    }
-    val solutionPart2 = totalLoadsForIndex.entries.first { it.value == solutionIndex - 1 }.key
+    val solutionPart2 = rotatedRocks.sumOf { height - it.y }
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
 
+internal fun fullRotation(
+    roundedRocks: List<Point>, cubeShapedRocks: List<Point>, width: Int, height: Int
+): List<Point> {
+    val rolledNorthRocks = roleNorth(roundedRocks, cubeShapedRocks)
+    val rolledWestRocks = roleWest(rolledNorthRocks, cubeShapedRocks)
+    val rolledSouthRocks = roleSouth(rolledWestRocks, cubeShapedRocks, height)
+    return roleEast(rolledSouthRocks, cubeShapedRocks, width)
+}
 
 internal fun roleNorth(
     roundedRocks: List<Point>, cubeShapedRocks: List<Point>
