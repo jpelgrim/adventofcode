@@ -20,16 +20,16 @@ fun solveDay15() {
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
 
-fun String.hashAlgorithm() = fold(0) { acc, i -> (acc + i.code) * 17 % 256 }
+fun String.hashed() = fold(0) { acc, i -> (acc + i.code) * 17 % 256 }
 
-fun solvePart1(input: List<String>) = input.sumOf { it.hashAlgorithm() }
+fun solvePart1(input: List<String>) = input.sumOf { it.hashed() }
 
 fun solvePart2(input: List<String>): Int {
     val map = mutableMapOf<Int, MutableList<Pair<String, Int>>>()
     input.forEach { step ->
         if (step.contains("=")) {
             val (label, value) = step.split("=")
-            val labelHash = label.hashAlgorithm()
+            val labelHash = label.hashed()
             val list = map.getOrPut(labelHash) { mutableListOf() }
             list.firstOrNull { it.first == label }?.let {
                 // Replace the value if the label already exists
@@ -39,7 +39,7 @@ fun solvePart2(input: List<String>): Int {
             } ?: list.add(label to value.toInt())
         } else {
             val (label, _) = step.split("-")
-            val labelHash = label.hashAlgorithm()
+            val labelHash = label.hashed()
             map[labelHash]?.let { list ->
                 list.firstOrNull { it.first == label }?.let { list.remove(it) }
                 if (list.isEmpty()) map.remove(labelHash)
