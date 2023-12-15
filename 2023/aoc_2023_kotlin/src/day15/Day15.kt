@@ -27,19 +27,15 @@ fun solvePart1(input: List<String>) = input.sumOf { it.hashed() }
 fun solvePart2(input: List<String>): Int {
     val map = mutableMapOf<Int, MutableList<Pair<String, Int>>>()
     input.forEach { step ->
-        if (step.contains("=")) {
-            val (label, value) = step.split("=")
-            val labelHash = label.hashed()
+        val (label, value) = step.split("=", "-")
+        val labelHash = label.hashed()
+        if (value.isNotEmpty()) {
             val list = map.getOrPut(labelHash) { mutableListOf() }
-            list.firstOrNull { it.first == label }?.let {
-                // Replace the value if the label already exists
-                val index = list.indexOf(it)
-                list.remove(it)
-                list.add(index, label to value.toInt())
+            list.indexOfFirst { it.first == label }.takeIf { it >= 0 }?.let {
+                list.removeAt(it)
+                list.add(it, label to value.toInt())
             } ?: list.add(label to value.toInt())
         } else {
-            val (label, _) = step.split("-")
-            val labelHash = label.hashed()
             map[labelHash]?.let { list ->
                 list.firstOrNull { it.first == label }?.let { list.remove(it) }
                 if (list.isEmpty()) map.remove(labelHash)
