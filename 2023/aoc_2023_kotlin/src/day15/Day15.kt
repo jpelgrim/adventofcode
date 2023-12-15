@@ -25,26 +25,19 @@ fun String.hashed() = fold(0) { acc, i -> (acc + i.code) * 17 % 256 }
 fun solvePart1(input: List<String>) = input.sumOf { it.hashed() }
 
 fun solvePart2(input: List<String>): Int {
-    val map = mutableMapOf<Int, MutableList<Pair<String, Int>>>()
+    val boxes = MutableList(256) { mutableListOf<Pair<String, Int>>() }
     input.forEach { step ->
         val (label, value) = step.split("=", "-")
-        val labelHash = label.hashed()
+        val hash = label.hashed()
         if (value.isNotEmpty()) {
-            val list = map.getOrPut(labelHash) { mutableListOf() }
-            list.indexOfFirst { it.first == label }.takeIf { it >= 0 }?.let {
-                list.removeAt(it)
-                list.add(it, label to value.toInt())
-            } ?: list.add(label to value.toInt())
+            val index = boxes[hash].indexOfFirst { it.first == label }
+            val lens = label to value.toInt()
+            if (index >= 0) boxes[hash][index] = lens else boxes[hash] += lens
         } else {
-            map[labelHash]?.let { list ->
-                list.firstOrNull { it.first == label }?.let { list.remove(it) }
-                if (list.isEmpty()) map.remove(labelHash)
-            }
+            boxes[hash].removeIf { it.first == label }
         }
     }
-    return map.entries.sumOf { entry ->
-        entry.value.foldIndexed(0) { index, sum, pair ->
-            sum + (pair.second * (index + 1) * (entry.key + 1))
-        }.toInt()
-    }
+    return boxes.flatMapIndexed { boxIndex, box ->
+        box.mapIndexed { lensIndex, lens -> (1 + boxIndex) * (1 + lensIndex) * lens.second }
+    }.sum()
 }
