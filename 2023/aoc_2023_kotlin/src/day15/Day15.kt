@@ -30,16 +30,13 @@ fun solvePart2(input: List<String>): Int {
         if (step.contains("=")) {
             val (label, value) = step.split("=")
             val labelHash = label.hashAlgorithm()
-            val list = map[labelHash] ?: mutableListOf()
-            if (list.any { it.first == label }) {
-                val existingPair = list.first { it.first == label }
-                val index = list.indexOf(existingPair)
-                list.remove(existingPair)
-                list.add(index, Pair(label, value.toInt()))
-            } else {
-                list.add(Pair(label, value.toInt()))
-            }
-            if (map[labelHash] == null) map[labelHash] = list
+            val list = map.getOrPut(labelHash) { mutableListOf() }
+            list.firstOrNull { it.first == label }?.let {
+                // Replace the value if the label already exists
+                val index = list.indexOf(it)
+                list.remove(it)
+                list.add(index, label to value.toInt())
+            } ?: list.add(label to value.toInt())
         } else {
             val (label, _) = step.split("-")
             val labelHash = label.hashAlgorithm()
