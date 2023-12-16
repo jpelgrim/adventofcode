@@ -18,6 +18,7 @@ libraries
 build
 .gradle
 translations-output
+input.txt
 
 .idea/
 !.idea/codeStyles/codeStyleConfig.xml
