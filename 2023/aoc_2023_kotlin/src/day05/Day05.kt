@@ -10,7 +10,7 @@ fun main() {
 }
 
 fun solveDay5() {
-    val input = "$DAY/part1_example.txt".readLines()
+    val input = "$DAY/input_example.txt".readLines()
 
     val seedsPart1 = input[0].substringAfter(": ").split(" ").map { it.toLong() }
 

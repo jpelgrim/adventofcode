@@ -11,7 +11,7 @@ fun main() {
 }
 
 fun solveDay3() {
-    val input = "$DAY/example_input.txt".readLines()
+    val input = "$DAY/input_example.txt".readLines()
     var solutionPart1 = 0
     val numbersAdjacentToAsterisk = mutableMapOf<Point, MutableList<Int>>()
     for (lineIndex in input.indices) {
