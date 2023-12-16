@@ -1,7 +1,7 @@
 package day11
 
-import println
-import readLines
+import util.println
+import util.readLines
 import kotlin.math.abs
 
 private const val DAY = "day11" // https://adventofcode.com/2023/day/11
@@ -10,7 +10,7 @@ fun main() {
     solveDay11()
 }
 
-data class Point(val x: Long, val y: Long)
+internal data class Point(val x: Long, val y: Long)
 
 fun solveDay11() {
     val input = "$DAY/input_example.txt".readLines()
@@ -31,10 +31,14 @@ fun solveDay11() {
         }
     }
     val translatedGalaxies = translateGalaxies(galaxies, emptyColumns, emptyRows, 2)
-    "The solution for $DAY part1 is: ${manhattanDistances(translatedGalaxies).sum()}".println()
+    val solutionPart1 = manhattanDistances(translatedGalaxies).sum()
+    check(solutionPart1 == 374L)
+    "The solution for $DAY part1 is: $solutionPart1".println()
 
     val translatedGalaxiesPart2 = translateGalaxies(galaxies, emptyColumns, emptyRows, 1000000)
-    "The solution for $DAY part2 is: ${manhattanDistances(translatedGalaxiesPart2).sum()}".println()
+    val solutionPart2 = manhattanDistances(translatedGalaxiesPart2).sum()
+    check(solutionPart2 == 82000210L)
+    "The solution for $DAY part2 is: $solutionPart2".println()
 }
 
 private fun translateGalaxies(

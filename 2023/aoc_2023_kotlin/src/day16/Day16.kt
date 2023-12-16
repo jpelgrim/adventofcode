@@ -1,11 +1,15 @@
 package day16
 
-import day16.Direction.DOWN
-import day16.Direction.LEFT
-import day16.Direction.RIGHT
-import day16.Direction.UP
-import println
-import readLines
+import util.Direction
+import util.Direction.DOWN
+import util.Direction.LEFT
+import util.Direction.RIGHT
+import util.Direction.UP
+import util.Point
+import util.move
+import util.println
+import util.readLines
+import util.withinBounds
 
 private const val DAY = "day16" // https://adventofcode.com/2023/day/16
 
@@ -74,21 +78,6 @@ private fun calcEnergized(
     }
 
     return visited.mapTo(mutableSetOf()) { it.first }.size
-}
-
-internal enum class Direction { UP, DOWN, LEFT, RIGHT; }
-
-internal data class Point(val x: Int, val y: Int) {
-
-    fun move(direction: Direction) = when (direction) {
-        UP -> Point(x, y - 1)
-        DOWN -> Point(x, y + 1)
-        RIGHT -> Point(x + 1, y)
-        LEFT -> Point(x - 1, y)
-    }
-
-    fun withinBounds(width: Int, height: Int) = x in 0 until width && y in 0 until height
-
 }
 
 internal fun Char.reflectedDirections(direction: Direction): List<Direction> = when {

@@ -23,6 +23,7 @@ import day22.solveDay22
 import day23.solveDay23
 import day24.solveDay24
 import day25.solveDay25
+import util.println
 import kotlin.time.measureTime
 
 private val solvers = listOf(

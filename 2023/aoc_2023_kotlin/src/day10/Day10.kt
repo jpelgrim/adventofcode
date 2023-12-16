@@ -1,7 +1,7 @@
 package day10
 
-import println
-import readLines
+import util.println
+import util.readLines
 import kotlin.time.measureTime
 
 private const val DAY = "day10" // https://adventofcode.com/2023/day/10

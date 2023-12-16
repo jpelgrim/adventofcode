@@ -1,10 +1,10 @@
 package day03
 
-import println
-import readLines
+import util.println
+import util.readLines
 import java.awt.Point
 
-private const val DAY = "day03"
+private const val DAY = "day03" // https://adventofcode.com/2023/day/3
 
 fun main() {
     solveDay3()

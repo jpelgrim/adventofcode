@@ -1,12 +1,10 @@
 package day04
 
-import println
-import readLines
+import util.println
+import util.readLines
 import kotlin.math.pow
 
-private const val DAY = "day04"
-
-// https://adventofcode.com/2023/day/4
+private const val DAY = "day04" // https://adventofcode.com/2023/day/4
 
 fun main() {
     solveDay4()

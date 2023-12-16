@@ -1,9 +1,9 @@
 package day08
 
-import println
-import readLines
+import util.println
+import util.readLines
 
-private const val DAY = "day08"
+private const val DAY = "day08" // https://adventofcode.com/2023/day/8
 
 fun main() {
     solveDay8()

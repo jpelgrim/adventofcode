@@ -1,7 +1,8 @@
 package day13
 
-import println
-import readText
+import util.println
+import util.readText
+import util.transposed
 
 private const val DAY = "day13"
 
@@ -25,10 +26,6 @@ fun solvePart2(matrices: List<List<String>>) = matrices.sumOf { listOfRows ->
     findMirrorIndexFuzzy(listOfRows, 1).let { if (it > 0) return@sumOf it * 100 }
     findMirrorIndexFuzzy(listOfRows.transposed(), 1).let { if (it > 0) return@sumOf it }
     return@sumOf 0
-}
-
-fun List<String>.transposed() = first().indices.map {
-    buildString { for (line in this@transposed) append(line[it]) }
 }
 
 private fun findMirrorIndexFuzzy(

@@ -1,15 +1,14 @@
 package day14
 
-import println
-import readLines
+import util.Point
+import util.println
+import util.readLines
 
 private const val DAY = "day14"
 
 fun main() {
     solveDay14()
 }
-
-internal data class Point(val x: Int, val y: Int)
 
 fun solveDay14() {
     val input = "$DAY/input_example.txt".readLines()

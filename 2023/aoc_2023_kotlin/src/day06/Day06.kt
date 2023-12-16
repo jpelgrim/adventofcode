@@ -1,7 +1,7 @@
 package day06
 
-import println
-import readLines
+import util.println
+import util.readLines
 
 private const val DAY = "day06" // https://adventofcode.com/2023/day/6
 
