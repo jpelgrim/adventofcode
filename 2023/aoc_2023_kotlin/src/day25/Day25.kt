@@ -3,32 +3,27 @@ package day25
 import util.println
 import util.readLines
 
-private const val DAY = "day25"
+private const val DAY = "day25" // https://adventofcode.com/2023/day/25
 
 fun main() {
     solveDay25()
 }
 
 fun solveDay25() {
-    val inputPart1 =
-        "$DAY/part1_example.txt"
-//        "$DAY/part1.txt"
-            .readLines()
-    val solutionPart1 = solvePart1(inputPart1)
+    val input = "$DAY/input_example.txt".readLines()
+    val solutionPart1 = solvePart1(input)
+    check(solutionPart1 == 0)
     "The solution for $DAY part1 is: $solutionPart1".println()
 
-    val inputPart2 =
-        "$DAY/part2_example.txt"
-//        "$DAY/part2.txt"
-            .readLines()
-    val solutionPart2 = solvePart2(inputPart2)
+    val solutionPart2 = solvePart2(input)
+    check(solutionPart2 == 0)
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
 
 fun solvePart1(input: List<String>): Int {
-    TODO()
+    return 0
 }
 
 fun solvePart2(input: List<String>): Int {
-    TODO()
+    return 0
 }
