@@ -129,3 +129,13 @@ fun Collection<Point>.bounds(): Rect {
         bottom = maxOf { it.y },
     )
 }
+
+// Calculate the size of the area of a list of points using the shoelace formula
+// See https://en.wikipedia.org/wiki/Shoelace_formula
+fun List<Point>.sizeOfEnclosedArea(): Long {
+    val x = map(Point::x)
+    val y = map(Point::y)
+    val left = y.drop(1).zip(x, Long::times)
+    val right = x.drop(1).zip(y, Long::times)
+    return left.zip(right, Long::minus).sum() / 2
+}

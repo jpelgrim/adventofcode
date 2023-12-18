@@ -8,6 +8,7 @@ import util.Direction.UP
 import util.Point
 import util.println
 import util.readLines
+import util.sizeOfEnclosedArea
 
 private const val DAY = "day18" // https://adventofcode.com/2023/day/18
 
@@ -22,7 +23,7 @@ fun solveDay18() {
     "The solution for $DAY part1 is: $solutionPart1".println()
 
     val solutionPart2 = solvePart2(input)
-    check(solutionPart2 == 952408144115L)
+    check(solutionPart2 == 952408144115L) { "Expected 952408144115 but was $solutionPart2"}
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
 
@@ -88,19 +89,11 @@ fun instructionFromColor(color: String): Instruction {
 // See https://www.theoremoftheday.org/GeometryAndTrigonometry/Shoelace/TotDShoelace.pdf
 // 👆🏻 PDF is also in this directory
 fun calculatePart2(instructions: List<Instruction>): Long {
-    var area = 0L
-    var border = 0L
-
-    var nextCorner = Point.ZERO
-    var lastCorner = nextCorner
-
+    val border = instructions.sumOf { it.distance }
+    val points = mutableSetOf(Point.ZERO)
     instructions.forEach { instruction ->
-        nextCorner = nextCorner.move(instruction.direction, instruction.distance)
-        area += lastCorner.x * nextCorner.y - lastCorner.y * nextCorner.x
-        border += instruction.distance
-        lastCorner = nextCorner
+        points.add(points.last().move(instruction.direction, instruction.distance))
     }
-
     // The answer is the area + half the border points + 1 (see explanation.png)
-    return area / 2 + border / 2 + 1
+    return points.toList().sizeOfEnclosedArea() + border / 2 + 1
 }
