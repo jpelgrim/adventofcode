@@ -57,10 +57,10 @@ fun solvePart1(input: List<String>): Long {
             it[0].toDirection(), it[1].toInt(), it[2].substringAfter("(#").substringBefore(")")
         )
     }
-    return calculateAreaPart1(instructions)
+    return calculatePart1(instructions)
 }
 
-private fun calculateAreaPart1(instructions: List<Instruction>): Long {
+private fun calculatePart1(instructions: List<Instruction>): Long {
     var current = Point(0, 0)
     val border = mutableSetOf(current)
     val toVisit = mutableSetOf<Point>()
@@ -99,7 +99,7 @@ fun solvePart2(input: List<String>): Long {
     }.map {
         instructionFromColor(it.color)
     }
-    return calculatePolygonAreaPart2(instructions)
+    return calculatePart2(instructions)
 }
 
 fun instructionFromColor(color: String): Instruction {
@@ -117,7 +117,7 @@ fun instructionFromColor(color: String): Instruction {
 
 // Shoelace formula on pairs of box corners
 // See https://en.wikipedia.org/wiki/Shoelace_formula
-fun calculatePolygonAreaPart2(instructions: List<Instruction>): Long {
+fun calculatePart2(instructions: List<Instruction>): Long {
     var area = 0L
     var border = 0L
 
