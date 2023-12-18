@@ -90,10 +90,10 @@ fun instructionFromColor(color: String): Instruction {
 // 👆🏻 PDF is also in this directory
 fun calculatePart2(instructions: List<Instruction>): Long {
     val border = instructions.sumOf { it.distance }
-    val points = mutableSetOf(Point.ZERO)
+    val points = mutableListOf(Point.ZERO)
     instructions.forEach { instruction ->
         points.add(points.last().move(instruction.direction, instruction.distance))
     }
     // The answer is the area + half the border points + 1 (see explanation.png)
-    return points.toList().sizeOfEnclosedArea() + border / 2 + 1
+    return points.sizeOfEnclosedArea() + border / 2 + 1
 }
