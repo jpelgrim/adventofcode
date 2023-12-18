@@ -1,11 +1,7 @@
 package util
 
-enum class Direction(var char: Char) {
-    LEFT('L'),
-    UP('U'),
-    RIGHT('R'),
-    DOWN('D'),
-    ;
+enum class Direction {
+    LEFT, UP, RIGHT, DOWN;
 
     fun clockwise(): Direction {
         return entries[(ordinal + 1) % entries.size]
@@ -15,10 +11,19 @@ enum class Direction(var char: Char) {
         return entries[(ordinal + entries.size - 1) % entries.size]
     }
 
+    fun opposite(): Direction {
+        return entries[(ordinal + 2) % entries.size]
+    }
+
     companion object {
-        private val byChar = entries.associateBy { it.char }
         fun parse(input: Char): Direction {
-            return byChar[input] ?: throw IllegalArgumentException("Invalid char=$input")
+            when (input) {
+                'L', '<' -> return LEFT
+                'U', '^' -> return UP
+                'R', '>' -> return RIGHT
+                'D', 'v', 'V' -> return DOWN
+            }
+            throw IllegalArgumentException("Invalid char=$input")
         }
     }
 }
