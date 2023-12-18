@@ -7,7 +7,9 @@ import util.Direction.UP
 import kotlin.math.absoluteValue
 import kotlin.math.atan2
 
-data class Point(val x: Int, val y: Int) {
+data class Point(val x: Long, val y: Long) {
+
+    constructor(x: Int, y: Int) : this(x.toLong(), y.toLong())
 
     fun adjacent(includeDiagonal: Boolean = false): List<Point> {
         val horizontal = listOf(
@@ -29,7 +31,7 @@ data class Point(val x: Int, val y: Int) {
         }
     }
 
-    fun manhattanDistanceTo(other: Point): Int {
+    fun manhattanDistanceTo(other: Point): Long {
         return (x - other.x).absoluteValue + (y - other.y).absoluteValue
     }
 
@@ -53,6 +55,19 @@ data class Point(val x: Int, val y: Int) {
         return count % 2 != 0
     }
 
+    fun move(
+        direction: Direction,
+        steps: Int = 1,
+    ): Point {
+        if (steps == 0) return this
+        return when (direction) {
+            UP -> Point(x, y - steps)
+            DOWN -> Point(x, y + steps)
+            RIGHT -> Point(x + steps, y)
+            LEFT -> Point(x - steps, y)
+        }
+    }
+
     override fun toString(): String = "($x,$y)"
 
     operator fun plus(other: Point): Point = Point(x = x + other.x, y = y + other.y)
@@ -61,25 +76,12 @@ data class Point(val x: Int, val y: Int) {
         val Zero = Point(0, 0)
         fun parse(from: String): Point {
             val (x, y) = from.split(",")
-            return Point(x = x.toInt(), y = y.toInt())
+            return Point(x = x.toLong(), y = y.toLong())
         }
     }
 }
 
 fun Point.withinBounds(width: Int, height: Int) = x in 0 until width && y in 0 until height
-
-fun Point.move(
-    direction: Direction,
-    steps: Int = 1,
-): Point {
-    if (steps == 0) return this
-    return when (direction) {
-        UP -> Point(x, y - steps)
-        DOWN -> Point(x, y + steps)
-        RIGHT -> Point(x + steps, y)
-        LEFT -> Point(x - steps, y)
-    }
-}
 
 fun Collection<Point>.printString(): String = associateWith { }.printString {
     if (it in this) "█" else " "
@@ -94,14 +96,14 @@ inline fun <T> Map<Point, T>.printString(crossinline tile: (Point) -> String): S
         separator = "\n",
         prefix = buildString {
             append('╔')
-            append("═".repeat(1 + bounds.right - bounds.left))
+            append("═".repeat(1 + (bounds.right - bounds.left).toInt()))
             append('╗')
             appendLine()
         },
         postfix = buildString {
             appendLine()
             append('╚')
-            append("═".repeat(1 + bounds.right - bounds.left))
+            append("═".repeat(1 + (bounds.right - bounds.left).toInt()))
             append('╝')
         },
     ) { y ->

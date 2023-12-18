@@ -5,6 +5,7 @@ import util.Direction.DOWN
 import util.Direction.LEFT
 import util.Direction.RIGHT
 import util.Direction.UP
+import util.Point
 import util.println
 import util.readLines
 
@@ -26,30 +27,6 @@ fun solveDay18() {
 }
 
 data class Instruction(val direction: Direction, val distance: Int, val color: String)
-
-// This puzzle needs a long point 😒 ... took me a while to figure this out
-internal data class Point(val x: Long, val y: Long) {
-    fun move(
-        direction: Direction,
-        steps: Int = 1,
-    ): Point {
-        if (steps == 0) return this
-        return when (direction) {
-            UP -> Point(x, y - steps)
-            DOWN -> Point(x, y + steps)
-            RIGHT -> Point(x + steps, y)
-            LEFT -> Point(x - steps, y)
-        }
-    }
-
-    fun adjacent() = listOf(
-        Point(x = x, y = y - 1),
-        Point(x = x, y = y + 1),
-        Point(x = x - 1, y = y),
-        Point(x = x + 1, y = y),
-    )
-
-}
 
 fun solvePart1(input: List<String>): Long {
     val instructions = input.map { it.split(" ") }.map {

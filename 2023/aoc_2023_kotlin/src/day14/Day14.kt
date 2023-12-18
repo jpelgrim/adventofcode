@@ -27,7 +27,7 @@ fun solveDay14() {
     val solutionPart1 = roleNorth(roundedRocks, cubeShapedRocks).sumOf { height - it.y }
     "The solution for $DAY part1 is: $solutionPart1".println()
 
-    val totalLoadsForIndex = mutableMapOf<Int, Int>()
+    val totalLoadsForIndex = mutableMapOf<Long, Int>()
     var rotatedRocks = roundedRocks.toList()
     val maxSpins = 1000000000
     for (index in 1..maxSpins) {
@@ -163,7 +163,7 @@ internal fun roleEast(
                 }
             // Move to the new position
             if (mostLeftRockToTheRightOfUs == null) {
-                newRoundedRockPositions.add(Point(width - 1, point.y))
+                newRoundedRockPositions.add(Point((width - 1).toLong(), point.y))
             } else {
                 newRoundedRockPositions.add(Point(mostLeftRockToTheRightOfUs.x - 1, point.y))
             }
@@ -200,7 +200,7 @@ internal fun roleSouth(
             }
             // Move to the new position
             if (highestRockBelow == null) {
-                newRoundedRockPositions.add(Point(point.x, height - 1))
+                newRoundedRockPositions.add(Point(point.x, (height - 1).toLong()))
             } else {
                 newRoundedRockPositions.add(Point(point.x, highestRockBelow.y - 1))
             }

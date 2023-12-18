@@ -1,5 +1,6 @@
 package day11
 
+import util.Point
 import util.println
 import util.readLines
 import kotlin.math.abs
@@ -9,8 +10,6 @@ private const val DAY = "day11" // https://adventofcode.com/2023/day/11
 fun main() {
     solveDay11()
 }
-
-internal data class Point(val x: Long, val y: Long)
 
 fun solveDay11() {
     val input = "$DAY/input_example.txt".readLines()

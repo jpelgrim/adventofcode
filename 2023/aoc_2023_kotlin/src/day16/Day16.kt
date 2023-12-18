@@ -6,7 +6,6 @@ import util.Direction.LEFT
 import util.Direction.RIGHT
 import util.Direction.UP
 import util.Point
-import util.move
 import util.println
 import util.readLines
 import util.withinBounds
@@ -67,7 +66,7 @@ private fun calcEnergized(
 
     while (true) {
         val (currentPoint, direction) = stack.removeFirstOrNull() ?: break
-        val mirror = lines[currentPoint.y][currentPoint.x]
+        val mirror = lines[currentPoint.y.toInt()][currentPoint.x.toInt()]
         for (newDirection in mirror.reflectedDirections(direction)) {
             val newPoint = currentPoint.move(newDirection)
             if (newPoint.withinBounds(width, height)) {

@@ -1,10 +1,10 @@
 package util
 
 data class Rect(
-    val left: Int,
-    val top: Int,
-    val right: Int,
-    val bottom: Int,
+    val left: Long,
+    val top: Long,
+    val right: Long,
+    val bottom: Long,
 ) {
 
     init {
@@ -12,9 +12,9 @@ data class Rect(
         require(top <= bottom)
     }
 
-    operator fun contains(point: Point): Boolean {
-        return point.x in left..right && point.y in top..bottom
-    }
+    operator fun contains(point: Point) = point.x in left..right && point.y in top..bottom
 
-    fun height(): Int = bottom - top
+    fun height(): Long = bottom - top
+
+    fun width(): Long = right - left
 }

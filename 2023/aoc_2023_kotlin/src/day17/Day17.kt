@@ -3,7 +3,6 @@ package day17
 import util.Direction
 import util.Direction.RIGHT
 import util.Point
-import util.move
 import util.println
 import util.readLines
 import util.withinBounds
@@ -47,7 +46,7 @@ fun solvePart1(input: List<String>): Int {
             .filter { it.point.x >= 0 && it.point.y >= 0 && it.point.x < matrix[0].size && it.point.y < matrix.size }
         for (neighbour in neighbours) {
             toVisit.add(
-                energy + matrix[neighbour.point.y][neighbour.point.x] to State(
+                energy + matrix[neighbour.point.y.toInt()][neighbour.point.x.toInt()] to State(
                     point = neighbour.point,
                     direction = neighbour.direction,
                     length = neighbour.length,
@@ -120,7 +119,7 @@ internal fun stepsInDirection(
     repeat(steps) {
         pos = pos.move(direction)
         if (!pos.withinBounds(matrix[0].size, matrix.size)) return null
-        nrgy += matrix[pos.y][pos.x]
+        nrgy += matrix[pos.y.toInt()][pos.x.toInt()]
     }
     return nrgy to State(pos, direction, length + steps)
 }
