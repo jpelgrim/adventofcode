@@ -139,3 +139,29 @@ fun List<Point>.sizeOfEnclosedArea(): Long {
     val right = x.drop(1).zip(y, Long::times)
     return left.zip(right, Long::minus).sum() / 2
 }
+
+/**
+ * For the given list of directions and distances (ordered clockwise)
+ *
+ * Returns a list with three types of information:
+ * 1. The size of the enclosed areas
+ * 2. The length of the border
+ * 3. The total size of border including its enclosed areas
+ *
+ * See https://en.wikipedia.org/wiki/Stokes%27_theorem
+ */
+fun List<Pair<Direction, Int>>.loopInfo(): List<Long> {
+    var area = 0L
+    var border = 0L
+    var y = 0L
+    forEach { (d, t) ->
+        when (d) {
+            RIGHT -> area += y * t
+            DOWN -> y += t
+            LEFT -> area -= y * t
+            UP -> y -= t
+        }
+        border += t
+    }
+    return listOf(area.absoluteValue, border, area.absoluteValue + border / 2 + 1)
+}

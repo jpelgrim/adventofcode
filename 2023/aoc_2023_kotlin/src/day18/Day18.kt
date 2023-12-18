@@ -6,6 +6,7 @@ import util.Direction.LEFT
 import util.Direction.RIGHT
 import util.Direction.UP
 import util.Point
+import util.loopInfo
 import util.println
 import util.readLines
 import util.sizeOfEnclosedArea
@@ -25,6 +26,10 @@ fun solveDay18() {
     val solutionPart2 = solvePart2(input)
     check(solutionPart2 == 952408144115L) { "Expected 952408144115 but was $solutionPart2"}
     "The solution for $DAY part2 is: $solutionPart2".println()
+
+    val solutionPart2Alt = solvePart2Alt(input)
+    check(solutionPart2Alt == 952408144115L) { "Expected 952408144115 but was $solutionPart2"}
+    "The solution for $DAY part2 is: $solutionPart2Alt".println()
 }
 
 data class Instruction(val direction: Direction, val distance: Int, val color: String)
@@ -69,6 +74,19 @@ fun solvePart2(input: List<String>): Long {
         instructionFromColor(it.color)
     }
     return calculatePart2(instructions)
+}
+
+fun solvePart2Alt(input: List<String>): Long {
+    val instructions = input.map { it.split(" ") }.map {
+        Instruction(
+            Direction.parse(it[0][0]), it[1].toInt(), it[2].substringAfter("(#").substringBefore(")")
+        )
+    }.map {
+        instructionFromColor(it.color)
+    }
+    val (enclosedArea, borderLength, borderWithArea) = instructions.map { it.direction to it.distance }.loopInfo()
+    "Enclosed area size: $enclosedArea\nBorder length: $borderLength\nSize of border and enclosed area: $borderWithArea".println()
+    return borderWithArea
 }
 
 fun instructionFromColor(color: String): Instruction {
