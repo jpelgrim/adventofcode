@@ -73,7 +73,7 @@ data class Point(val x: Long, val y: Long) {
     operator fun plus(other: Point): Point = Point(x = x + other.x, y = y + other.y)
 
     companion object {
-        val Zero = Point(0, 0)
+        val ZERO = Point(0, 0)
         fun parse(from: String): Point {
             val (x, y) = from.split(",")
             return Point(x = x.toLong(), y = y.toLong())

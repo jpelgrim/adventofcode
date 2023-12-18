@@ -31,7 +31,7 @@ fun solveDay16() {
 }
 
 internal fun solvePart1(lines: List<String>, width: Int, height: Int) =
-    calcEnergized(lines, width, height, Point(0, 0) to RIGHT)
+    calcEnergized(lines, width, height, Point.ZERO to RIGHT)
 
 fun solvePart2(input: List<String>, width: Int, height: Int): Int {
     var maxEnergized = 0

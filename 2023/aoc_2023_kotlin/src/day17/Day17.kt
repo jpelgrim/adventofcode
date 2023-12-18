@@ -31,7 +31,7 @@ fun solvePart1(input: List<String>): Int {
     val matrix = input.map { line -> line.map { c -> c.code - 48 } }
 
     val visited = mutableSetOf<State>()
-    val start = State(Point(0, 0), RIGHT, 0)
+    val start = State(Point.ZERO, RIGHT, 0)
     val end = Point(matrix[0].size - 1, matrix.size - 1)
     val toVisit =
         PriorityQueue(compareBy<Pair<Int, State>> { it.second.point.manhattanDistanceTo(start.point) }.thenBy { it.first })
@@ -75,7 +75,7 @@ fun solvePart2(input: List<String>): Int {
     val matrix = input.map { line -> line.map { c -> c.code - 48 } }
 
     val visited = mutableSetOf<State>()
-    val start = State(Point(0, 0), RIGHT, 0)
+    val start = State(Point.ZERO, RIGHT, 0)
     val end = Point(matrix[0].size - 1, matrix.size - 1)
     val toVisit =
         PriorityQueue(compareBy<Pair<Int, State>> { it.second.point.manhattanDistanceTo(start.point) }.thenBy { it.first })

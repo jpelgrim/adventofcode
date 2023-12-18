@@ -38,7 +38,7 @@ fun solvePart1(input: List<String>): Long {
 }
 
 private fun calculatePart1(instructions: List<Instruction>): Long {
-    var current = Point(0, 0)
+    var current = Point.ZERO
     val border = mutableSetOf(current)
     val toVisit = mutableSetOf<Point>()
     for (instruction in instructions) {
@@ -100,7 +100,7 @@ fun calculatePart2(instructions: List<Instruction>): Long {
     var area = 0L
     var border = 0L
 
-    var nextCorner = Point(0, 0)
+    var nextCorner = Point.ZERO
     var lastCorner = nextCorner
 
     instructions.forEach { instruction ->
