@@ -130,7 +130,7 @@ fun Collection<Point>.bounds(): Rect {
     )
 }
 
-// Calculate the size of the area of a list of points using the shoelace formula
+// Calculate the size of the area of a list of (clockwise, ordered) points using the shoelace formula
 // See https://en.wikipedia.org/wiki/Shoelace_formula
 fun List<Point>.sizeOfEnclosedArea(): Long {
     val x = map(Point::x)
