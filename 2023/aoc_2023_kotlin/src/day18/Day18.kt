@@ -31,7 +31,7 @@ data class Instruction(val direction: Direction, val distance: Int, val color: S
 fun solvePart1(input: List<String>): Long {
     val instructions = input.map { it.split(" ") }.map {
         Instruction(
-            it[0].toDirection(), it[1].toInt(), it[2].substringAfter("(#").substringBefore(")")
+            Direction.parse(it[0][0]), it[1].toInt(), it[2].substringAfter("(#").substringBefore(")")
         )
     }
     return calculatePart1(instructions)
@@ -59,19 +59,10 @@ private fun calculatePart1(instructions: List<Instruction>): Long {
     return (border.size + visited.size).toLong()
 }
 
-private fun String.toDirection(): Direction = when (this) {
-    "R" -> RIGHT
-    "L" -> LEFT
-    "U" -> UP
-    "D" -> DOWN
-    else -> throw IllegalArgumentException("Unknown direction: $this")
-}
-
-
 fun solvePart2(input: List<String>): Long {
     val instructions = input.map { it.split(" ") }.map {
         Instruction(
-            it[0].toDirection(), it[1].toInt(), it[2].substringAfter("(#").substringBefore(")")
+            Direction.parse(it[0][0]), it[1].toInt(), it[2].substringAfter("(#").substringBefore(")")
         )
     }.map {
         instructionFromColor(it.color)

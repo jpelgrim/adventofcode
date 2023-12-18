@@ -1,5 +1,6 @@
 package day10
 
+import util.Direction
 import util.println
 import util.readLines
 import kotlin.time.measureTime
@@ -50,10 +51,6 @@ fun solveDay10() {
 
     val solutionPart2 = width * height - loop.size - visited.size
     "The solution for $DAY part2 is: $solutionPart2".println()
-}
-
-enum class Direction {
-    UP, RIGHT, DOWN, LEFT;
 }
 
 fun findPathOuterBorderPositions(
