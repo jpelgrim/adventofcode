@@ -131,5 +131,5 @@ fun calculatePart2(instructions: List<Instruction>): Long {
         lastCorner = nextCorner
     }
 
-    return area / 2 - border / 2 + 1 + border
+    return area / 2 + border / 2 + 1
 }
