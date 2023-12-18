@@ -1,5 +1,10 @@
 package day18
 
+import util.Direction
+import util.Direction.DOWN
+import util.Direction.LEFT
+import util.Direction.RIGHT
+import util.Direction.UP
 import util.println
 import util.readLines
 
@@ -12,18 +17,119 @@ fun main() {
 fun solveDay18() {
     val input = "$DAY/input_example.txt".readLines()
     val solutionPart1 = solvePart1(input)
-    check(solutionPart1 == 0)
+    check(solutionPart1 == 62L)
     "The solution for $DAY part1 is: $solutionPart1".println()
 
     val solutionPart2 = solvePart2(input)
-    check(solutionPart2 == 0)
+    check(solutionPart2 == 952408144115L)
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
 
-fun solvePart1(input: List<String>): Int {
-    return 0
+data class Instruction(val direction: Direction, val distance: Int, val color: String)
+
+// This puzzle needs a long point 😒 ... took me a while to figure this out
+internal data class Point(val x: Long, val y: Long) {
+    fun move(
+        direction: Direction,
+        steps: Int = 1,
+    ): Point {
+        if (steps == 0) return this
+        return when (direction) {
+            UP -> Point(x, y - steps)
+            DOWN -> Point(x, y + steps)
+            RIGHT -> Point(x + steps, y)
+            LEFT -> Point(x - steps, y)
+        }
+    }
+
+    fun adjacent() = listOf(
+        Point(x = x, y = y - 1),
+        Point(x = x, y = y + 1),
+        Point(x = x - 1, y = y),
+        Point(x = x + 1, y = y),
+    )
+
 }
 
-fun solvePart2(input: List<String>): Int {
-    return 0
+fun solvePart1(input: List<String>): Long {
+    val instructions = input.map { it.split(" ") }.map {
+        Instruction(
+            it[0].toDirection(), it[1].toInt(), it[2].substringAfter("(#").substringBefore(")")
+        )
+    }
+    return calculateAreaPart1(instructions)
+}
+
+private fun calculateAreaPart1(instructions: List<Instruction>): Long {
+    var current = Point(0, 0)
+    val border = mutableSetOf(current)
+    val toVisit = mutableSetOf<Point>()
+    for (instruction in instructions) {
+        repeat(instruction.distance) {
+            current = current.move(instruction.direction)
+            border += current
+        }
+        toVisit += current.move(instruction.direction.clockwise())
+    }
+    val visited = mutableSetOf<Point>()
+    while (toVisit.isNotEmpty()) {
+        val next = toVisit.first()
+        toVisit.remove(next)
+        if (next in visited || next in border) continue
+        visited += next
+        toVisit.addAll(next.adjacent())
+    }
+    return (border.size + visited.size).toLong()
+}
+
+private fun String.toDirection(): Direction = when (this) {
+    "R" -> RIGHT
+    "L" -> LEFT
+    "U" -> UP
+    "D" -> DOWN
+    else -> throw IllegalArgumentException("Unknown direction: $this")
+}
+
+
+fun solvePart2(input: List<String>): Long {
+    val instructions = input.map { it.split(" ") }.map {
+        Instruction(
+            it[0].toDirection(), it[1].toInt(), it[2].substringAfter("(#").substringBefore(")")
+        )
+    }.map {
+        instructionFromColor(it.color)
+    }
+    return calculatePolygonAreaPart2(instructions)
+}
+
+fun instructionFromColor(color: String): Instruction {
+    val direction = when (color.last().toString().toInt()) {
+        0 -> RIGHT
+        1 -> DOWN
+        2 -> LEFT
+        3 -> UP
+        else -> throw IllegalArgumentException("Unknown direction")
+    }
+    // steps is a hex number convert it to decimal
+    val distance = color.dropLast(1).toLong(16).toInt()
+    return Instruction(direction, distance, color)
+}
+
+// Shoelace formula on pairs of box corners
+// See https://en.wikipedia.org/wiki/Shoelace_formula
+fun calculatePolygonAreaPart2(instructions: List<Instruction>): Long {
+    var area = 0L
+    var border = 0L
+
+    var nextCorner = Point(0, 0)
+    var lastCorner = nextCorner
+
+    instructions.forEach { instruction ->
+        nextCorner = nextCorner.move(instruction.direction, instruction.distance)
+        area += lastCorner.x * nextCorner.y - lastCorner.y * nextCorner.x
+        border += instruction.distance
+        lastCorner = nextCorner
+    }
+
+    return area / 2 - border / 2 + 1 + border
 }
