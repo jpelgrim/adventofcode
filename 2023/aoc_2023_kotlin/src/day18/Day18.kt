@@ -115,7 +115,7 @@ fun instructionFromColor(color: String): Instruction {
     return Instruction(direction, distance, color)
 }
 
-// Shoelace formula on pairs of box corners
+// Shoelace formula on pairs of box corners to calculate the area
 // See https://en.wikipedia.org/wiki/Shoelace_formula
 fun calculatePart2(instructions: List<Instruction>): Long {
     var area = 0L
@@ -131,5 +131,6 @@ fun calculatePart2(instructions: List<Instruction>): Long {
         lastCorner = nextCorner
     }
 
+    // The answer is the area + half the border points + 1 (see explanation.png)
     return area / 2 + border / 2 + 1
 }
