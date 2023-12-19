@@ -99,8 +99,8 @@ fun solveDay19() {
 
     var solutionPart2 = 0L
     val partRanges = List(4) { List(4000) { it + 1 } }
-    val toProcess = ArrayDeque<Pair<String, List<List<Int>>>>()
-    toProcess.add("in" to partRanges)
+    val toProcess = mutableListOf<Pair<String, List<List<Int>>>>()
+    toProcess += "in" to partRanges
     while (toProcess.isNotEmpty()) {
         val (key, ranges) = toProcess.removeFirst()
         val result = doWorkflowPart2(key, ranges)
@@ -108,7 +108,7 @@ fun solveDay19() {
             if (newKey == "A") {
                 solutionPart2 += newRanges.fold(1L) { acc, list -> acc * list.count() }
             } else if (newKey != "R") {
-                toProcess.add(newKey to newRanges)
+                toProcess += newKey to newRanges
             }
         }
     }
