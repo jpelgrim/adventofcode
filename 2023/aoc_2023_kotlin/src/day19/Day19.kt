@@ -38,12 +38,7 @@ fun solveDay19() {
                 if (rule[0] == "R") return false
                 return doWorkflow(part, rule[0])
             } else {
-                val category = when (rule[0][0]) {
-                    'x' -> X
-                    'm' -> M
-                    'a' -> A
-                    else -> S
-                }
+                val category = rule[0][0].toCategory()
                 val comparator = rule[0][1]
                 val boundary = rule[0].substring(2).toInt()
                 when (comparator) {
@@ -76,35 +71,22 @@ fun solveDay19() {
                         result += doWorkflowPart2(rule[0], currentRanges)
                     }
                 } else {
-                    val category = when (rule[0][0]) {
-                        'x' -> X
-                        'm' -> M
-                        'a' -> A
-                        else -> S
-                    }
+                    val category = rule[0][0].toCategory()
                     val comparator = rule[0][1]
                     val boundary = rule[0].substring(2).toInt()
                     val newRanges = currentRanges.toMutableList()
                     when (comparator) {
                         '>' -> {
-                            val acceptedRange =
-                                currentRanges[category].intersect(boundary + 1..4000)
+                            val acceptedRange = currentRanges[category].intersect(boundary + 1..4000)
                             newRanges[category] = acceptedRange.toList()
-                            if (acceptedRange.isNotEmpty()) result += doWorkflowPart2(
-                                rule[1],
-                                newRanges
-                            )
+                            if (acceptedRange.isNotEmpty()) result += doWorkflowPart2(rule[1], newRanges)
                             val rejectedRange = currentRanges[category].intersect(1..boundary)
                             currentRanges[category] = rejectedRange.toList()
                         }
-
                         '<' -> {
                             val acceptedRange = currentRanges[category].intersect(1..<boundary)
                             newRanges[category] = acceptedRange.toList()
-                            if (acceptedRange.isNotEmpty()) result += doWorkflowPart2(
-                                rule[1],
-                                newRanges
-                            )
+                            if (acceptedRange.isNotEmpty()) result += doWorkflowPart2(rule[1], newRanges)
                             val rejectedRange = currentRanges[category].intersect(boundary..4000)
                             currentRanges[category] = rejectedRange.toList()
                         }
@@ -132,4 +114,11 @@ fun solveDay19() {
     }
     check(solutionPart2 == 167409079868000) { "Expected 167409079868000 but was $solutionPart2" }
     "The solution for $DAY part2 is: $solutionPart2".println()
+}
+
+fun Char.toCategory() = when (this) {
+    'x' -> X
+    'm' -> M
+    'a' -> A
+    else -> S
 }
