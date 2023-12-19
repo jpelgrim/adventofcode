@@ -117,9 +117,11 @@ internal fun stepsInDirection(
     var pos = from.point
     var nrgy = energy
     repeat(steps) {
-        pos = pos.move(direction)
-        if (!pos.withinBounds(matrix[0].size, matrix.size)) return null
-        nrgy += matrix[pos.y.toInt()][pos.x.toInt()]
+        if (pos != Point(matrix[0].size - 1, matrix.size - 1)) {
+            pos = pos.move(direction)
+            if (!pos.withinBounds(matrix[0].size, matrix.size)) return null
+            nrgy += matrix[pos.y.toInt()][pos.x.toInt()]
+        }
     }
     return nrgy to State(pos, direction, length + steps)
 }
