@@ -88,21 +88,23 @@ fun solvePart2(input: List<String>): Int {
         if (!visited.add(current)) continue
 
         if (current.length < 10) {
+            // It's okay to go straight
             stepsInDirection(current, current.direction, energy, matrix, current.length)?.let {
                 toVisit.add(it)
             }
         }
-
-        var direction = current.direction.clockwise()
-        stepsInDirection(current, direction, energy, matrix, 0,4)?.let {
-            toVisit.add(it)
-        }
-        direction = current.direction.counterClockwise()
-        stepsInDirection(current, direction, energy, matrix, 0,4)?.let {
-            toVisit.add(it)
+        if (current.length > 4) {
+            // It's okay to turn left or right
+            val turnRight = current.direction.clockwise()
+            stepsInDirection(current, turnRight, energy, matrix, 1)?.let {
+                toVisit.add(it)
+            }
+            val turnLeft = current.direction.counterClockwise()
+            stepsInDirection(current, turnLeft, energy, matrix, 1)?.let {
+                toVisit.add(it)
+            }
         }
     }
-
     throw IllegalStateException("No solution found")
 }
 
@@ -112,14 +114,11 @@ internal fun stepsInDirection(
     energy: Int,
     matrix: List<List<Int>>,
     length: Int = 0,
-    steps: Int = 1,
 ): Pair<Int, State>? {
     var pos = from.point
     var nrgy = energy
-    repeat(steps) {
-        pos = pos.move(direction)
-        if (!pos.withinBounds(matrix[0].size, matrix.size)) return null
-        nrgy += matrix[pos.y.toInt()][pos.x.toInt()]
-    }
-    return nrgy to State(pos, direction, length + steps)
+    pos = pos.move(direction)
+    if (!pos.withinBounds(matrix[0].size, matrix.size)) return null
+    nrgy += matrix[pos.y.toInt()][pos.x.toInt()]
+    return nrgy to State(pos, direction, length + 1)
 }
