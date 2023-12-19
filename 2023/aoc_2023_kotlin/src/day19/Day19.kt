@@ -99,8 +99,7 @@ fun solveDay19() {
 
     var solutionPart2 = 0L
     val partRanges = List(4) { List(4000) { it + 1 } }
-    val toProcess = mutableListOf<Pair<String, List<List<Int>>>>()
-    toProcess += "in" to partRanges
+    val toProcess = mutableListOf("in" to partRanges)
     while (toProcess.isNotEmpty()) {
         val (key, ranges) = toProcess.removeFirst()
         val result = doWorkflowPart2(key, ranges)
