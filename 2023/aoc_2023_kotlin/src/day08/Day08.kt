@@ -1,5 +1,6 @@
 package day08
 
+import util.lcm
 import util.println
 import util.readLines
 
@@ -11,9 +12,11 @@ fun main() {
 
 fun solveDay8() {
     val inputPart1 = "$DAY/input_example.txt".readLines()
+    check(solvePart1(inputPart1) == 6)
     "The solution for $DAY part1 is: ${solvePart1(inputPart1)}".println()
 
     val inputPart2 = "$DAY/input_example2.txt".readLines()
+    check(solvePart2(inputPart2) == 6L)
     "The solution for $DAY part2 is: ${solvePart2(inputPart2)}".println()
 }
 
@@ -69,14 +72,5 @@ fun solvePart2(input: List<String>): Long {
             }
         }
     }
-    return calculateLowestCommonSteps(repeatingPatternLengths)
-}
-
-fun calculateLowestCommonSteps(steps: List<Long>): Long {
-    val maxSteps = steps.max()
-    var current = maxSteps
-    while (true) {
-        if (steps.all { current % it == 0L }) return current
-        current += maxSteps
-    }
+    return lcm(repeatingPatternLengths)
 }
