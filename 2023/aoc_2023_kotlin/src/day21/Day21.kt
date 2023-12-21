@@ -81,10 +81,18 @@ fun solveDay21() {
         }
     }
 
-    val repeatingPattern1 = block1Size + block2Size
-    val repeatingPattern2 = sizeAtStep197 - repeatingPattern1 - diamondShapeSize
+    // Size of repeating block pattern 1
+    val sizePattern1 = block1Size + block2Size
+    // Size of repeating block pattern 2
+    val sizePattern2 = sizeAtStep197 - sizePattern1 - diamondShapeSize
+    // Radius of the diamond shape, in original numbers of original block sizes
     val radius = 26501365 / 131L
-    val solutionPart2 = repeatingPattern1 * radius * radius + repeatingPattern2 * radius + diamondShapeSize
+    // The first block pattern is repeated radius * radius times
+    val totalBlockPattern1Size = sizePattern1 * radius * radius
+    // The second block pattern is repeated radius times
+    val totalBlockPattern2Size = sizePattern2 * radius
+    // We also need to add the diamond shape size itself to the result
+    val solutionPart2 = totalBlockPattern1Size + totalBlockPattern2Size + diamondShapeSize
     check(solutionPart2 == 630129824772393L)
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
