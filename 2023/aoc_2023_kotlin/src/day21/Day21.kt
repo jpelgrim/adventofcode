@@ -45,7 +45,7 @@ fun solveDay21() {
 
     val width = input[0].length
     val height = input.size
-    val steps = 65 + 132
+    val steps = 65 + 134
     var diamondShapeSize = 0L
     var sizeAtStep197 = 0L
     var block1Size = 0
@@ -74,10 +74,21 @@ fun solveDay21() {
         }
         if (it == 64 + 131) {
             sizeAtStep197 = stepPositions.size.toLong()
+            // The first time we encounter a full block in the original 131x131 grid
             block1Size = stepPositions.filter { step -> step.withinBounds(width,height) }.size
         }
         if (it == 64 + 132) {
+            // The flop size of the previous block. This pattern is now repeated indefinitely in the original 131x131 grid
             block2Size = stepPositions.filter { step -> step.withinBounds(width,height) }.size
+        }
+        // The below checks are not necessary, but just to demonstrate that the pattern repeats itself
+        if (it == 64 + 133) {
+            val block3Size = stepPositions.filter { step -> step.withinBounds(width,height) }.size
+            check(block3Size == block1Size)
+        }
+        if (it == 64 + 134) {
+            val block4Size = stepPositions.filter { step -> step.withinBounds(width,height) }.size
+            check(block4Size == block2Size)
         }
     }
 
