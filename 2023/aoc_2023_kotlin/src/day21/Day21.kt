@@ -83,8 +83,8 @@ fun solveDay21() {
 
     val repeatingPattern1 = block1Size + block2Size
     val repeatingPattern2 = sizeAtStep197 - repeatingPattern1 - diamondShapeSize
-    val spread = 26501365 / 131L
-    val solutionPart2 = repeatingPattern1 * spread * spread + repeatingPattern2 * spread + diamondShapeSize
+    val radius = 26501365 / 131L
+    val solutionPart2 = repeatingPattern1 * radius * radius + repeatingPattern2 * radius + diamondShapeSize
     check(solutionPart2 == 630129824772393L)
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
