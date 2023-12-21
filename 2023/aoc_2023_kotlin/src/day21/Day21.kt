@@ -3,6 +3,7 @@ package day21
 import util.Point
 import util.println
 import util.readLines
+import util.withinBounds
 
 private const val DAY = "day21" // https://adventofcode.com/2023/day/21
 
@@ -35,6 +36,7 @@ fun solveDay21() {
         stepPositions.addAll(newStepPositions)
     }
     val solutionPart1 = stepPositions.size
+    check(solutionPart1 == 3795)
     "The solution for $DAY part1 is: $solutionPart1".println()
 
     // Part 2
@@ -43,10 +45,11 @@ fun solveDay21() {
 
     val width = input[0].length
     val height = input.size
-    val steps = 65 + 131 + 131
+    val steps = 65 + 132
     var diamondShapeSize = 0L
     var sizeAtStep197 = 0L
-    var sizeAtStep327 = 0L
+    var block1Size = 0
+    var block2Size = 0
     repeat(steps) {
         val newStepPositions = mutableSetOf<Point>()
         stepPositions.forEach { stepPosition ->
@@ -66,14 +69,22 @@ fun solveDay21() {
         }
         stepPositions.clear()
         stepPositions.addAll(newStepPositions)
-        if (it == 64) diamondShapeSize = stepPositions.size.toLong()
-        if (it == 64 + 131) sizeAtStep197 = stepPositions.size.toLong()
-        if (it == 64 + 131 + 131) sizeAtStep327 = stepPositions.size.toLong()
+        if (it == 64) {
+            diamondShapeSize = stepPositions.size.toLong()
+        }
+        if (it == 64 + 131) {
+            sizeAtStep197 = stepPositions.size.toLong()
+            block1Size = stepPositions.filter { step -> step.withinBounds(width,height) }.size
+        }
+        if (it == 64 + 132) {
+            block2Size = stepPositions.filter { step -> step.withinBounds(width,height) }.size
+        }
     }
 
-    val block1Size = (sizeAtStep327 - 2 * sizeAtStep197 + diamondShapeSize) / 2
-    val block2Size = (4 * sizeAtStep197 - sizeAtStep327 - 3 * diamondShapeSize) / 2
+    val repeatingPattern1 = block1Size + block2Size
+    val repeatingPattern2 = sizeAtStep197 - repeatingPattern1 - diamondShapeSize
     val spread = 26501365 / 131L
-    val solutionPart2 = block1Size * spread * spread + block2Size * spread + diamondShapeSize
+    val solutionPart2 = repeatingPattern1 * spread * spread + repeatingPattern2 * spread + diamondShapeSize
+    check(solutionPart2 == 630129824772393L)
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
