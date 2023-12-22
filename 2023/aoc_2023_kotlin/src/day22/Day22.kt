@@ -11,7 +11,7 @@ fun main() {
 }
 
 fun solveDay22() {
-    val input = "$DAY/input.txt".readLines()
+    val input = "$DAY/input_example.txt".readLines()
     val cubes =
         input.map { line -> line.split("~").map { coords -> coords.split(",").map { it.toInt() } } }
             .mapIndexed { index, coords ->
@@ -25,32 +25,26 @@ fun solveDay22() {
     val cubesInRest = gravity(cubes)
 
     // Needed for part 2
-    val singleCubeSupports = mutableSetOf<Cube>()
+    val above = buildMap<Int, MutableSet<Int>> {
+        cubesInRest.indices.forEach { put(it, mutableSetOf()) }
+    }
     val solutionPart1 = cubesInRest.sumOf { cube ->
         val supportedCubes =
             cubesInRest.filter { it.start.z == cube.end.z + 1 && it.xyPlanesIntersect(cube) != null }
         if (supportedCubes.isEmpty()) return@sumOf 1 as Int
+        above[cube.id]!! += supportedCubes.map { it.id }
 
         for (supportedCube in supportedCubes) {
             val supportedByCubes = cubesInRest.filter {
                 it.end.z == supportedCube.start.z - 1 && it.xyPlanesIntersect(supportedCube) != null
             }
-            if (supportedByCubes.size == 1) {
-                singleCubeSupports.add(cube)
-                return@sumOf 0 as Int
-            }
+            if (supportedByCubes.size == 1) return@sumOf 0 as Int
         }
         return@sumOf 1 as Int
     }
     "The solution for $DAY part1 is: $solutionPart1".println()
 
-    val solutionPart2 = singleCubeSupports.sumOf { cube ->
-        val stateWhenCubeIsRemoved = gravity(cubesInRest.filter { it != cube })
-        return@sumOf stateWhenCubeIsRemoved.count { pC ->
-            val first = cubesInRest.first { it.id == pC.id }
-            return@count first.start.z != pC.start.z
-        }
-    }
+    val solutionPart2 = cubesInRest.indices.sumOf { countFallen(it, above) }
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
 
@@ -84,8 +78,34 @@ data class Cube(val id: Int, val start: Point3D, val end: Point3D) {
         val otherPlane = other.xyPlane()
         val xOverlap = plane.xRange intersect otherPlane.xRange
         val yOverlap = plane.yRange intersect otherPlane.yRange
-        return if (xOverlap.isEmpty() || yOverlap.isEmpty()) null else XYPlane(xOverlap.first()..xOverlap.last(), yOverlap.first()..yOverlap.last())
+        return if (xOverlap.isEmpty() || yOverlap.isEmpty()) null else XYPlane(
+            xOverlap.first()..xOverlap.last(), yOverlap.first()..yOverlap.last()
+        )
     }
 }
 
 data class XYPlane(val xRange: IntRange, val yRange: IntRange)
+
+private fun countFallen(id: Int, above: Map<Int, Set<Int>>): Int {
+    val below = buildMap<Int, MutableSet<Int>> {
+        above.keys.forEach { key ->
+            above[key]!!.forEach { value ->
+                getOrPut(value) { mutableSetOf() } += key
+            }
+        }
+    }
+    val cubeIdsToVisit = mutableListOf<Int>()
+    cubeIdsToVisit += id
+    val fallen = mutableSetOf<Int>()
+    while (cubeIdsToVisit.isNotEmpty()) {
+        val currentId = cubeIdsToVisit.removeFirst()
+        fallen += currentId
+        for (brickAbove in above[currentId]!!) {
+            val remaining = below[brickAbove]!! - fallen
+            if (remaining.isEmpty()) {
+                cubeIdsToVisit += brickAbove
+            }
+        }
+    }
+    return fallen.size - 1
+}
