@@ -84,27 +84,26 @@ fun solvePart1(input: List<String>): Int {
 }
 
 fun solvePart2(input: List<String>): Int {
-    val pointsInTrail = buildList {
+    val trail = buildList {
         input.forEachIndexed { y, line ->
             line.forEachIndexed { x, c ->
                 if (c != '#') add(Point(x, y))
             }
         }
     }
-    val start = pointsInTrail.first()
-    val end = pointsInTrail.last()
-    val forksInTrail: List<Point> = pointsInTrail.filter { p ->
-        p.adjacent(false).count { pointsInTrail.contains(it) } > 2
+    val start = trail.first()
+    val end = trail.last()
+    val junctions: List<Point> = trail.filter { p ->
+        p.adjacent(false).count { trail.contains(it) } > 2
     }
 
     // A maximum path length is easy to find in straight lines
     // However, the interesting parts are the start, end, and all the points on the map where we
-    // can go more than one way (forks in the road). So we build a map of all these points and
-    // remember all distances. Then we can find the longest path by combining the points in this
-    // map to try and build up a path from start to end using all these parts.
-    val interestingPoints = (forksInTrail + start + end)
-    val interestingPaths = buildMap {
-        interestingPoints.forEach { from ->
+    // can go more than one way (junctions). So we build a map of all these points and
+    // remember all distances.
+    val pointsToRemember = (junctions + start + end)
+    val maxPathChunks = buildMap {
+        pointsToRemember.forEach { from ->
             this[from] = buildMap {
                 val queue = mutableListOf<Pair<Point, Int>>()
                 val visited = mutableSetOf(from)
@@ -112,9 +111,9 @@ fun solvePart2(input: List<String>): Int {
                 while (queue.isNotEmpty()) {
                     val (current, distance) = queue.removeFirst()
                     current.adjacent(false)
-                        .filter { pointsInTrail.contains(it) && !visited.contains(it) }.forEach {
+                        .filter { trail.contains(it) && !visited.contains(it) }.forEach {
                             visited.add(it)
-                            if (interestingPoints.contains(it)) {
+                            if (pointsToRemember.contains(it)) {
                                 // This is a distance worth remembering
                                 this[it] = distance + 1
                             } else {
@@ -126,18 +125,20 @@ fun solvePart2(input: List<String>): Int {
         }
     }
 
-    fun findPath(from: Point, visited: List<Point>): Int {
+    // Now we can find the longest path by combining the start, end and various junction
+    // points in the map to try and build up a path from start to end using all these parts.
+    fun combineMaxPathChunks(from: Point, visited: List<Point>): Int {
         if (from == end) return 0
         var maxDistance = 0
-        interestingPaths[from]?.forEach { (vertex, prev) ->
-            if (!visited.contains(vertex)) {
-                if (vertex == end) return prev
-                val next = findPath(vertex, visited + vertex)
-                if (prev + next > maxDistance) maxDistance = prev + next
+        maxPathChunks[from]?.forEach { (next, distance) ->
+            if (!visited.contains(next)) {
+                if (next == end) return distance
+                val chunkDistance = combineMaxPathChunks(next, visited + next)
+                if (distance + chunkDistance > maxDistance) maxDistance = distance + chunkDistance
             }
         }
         return maxDistance
     }
 
-    return findPath(start, listOf(start))
+    return combineMaxPathChunks(start, listOf(start))
 }
