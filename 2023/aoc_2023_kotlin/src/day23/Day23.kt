@@ -126,7 +126,7 @@ fun solvePart2(input: List<String>): Int {
         }
     }
 
-    fun findPath(from: Point, visited: Set<Point>): Int {
+    fun findPath(from: Point, visited: List<Point>): Int {
         if (from == end) return 0
         var maxDistance = 0
         interestingPaths[from]?.forEach { (vertex, prev) ->
@@ -139,5 +139,5 @@ fun solvePart2(input: List<String>): Int {
         return maxDistance
     }
 
-    return findPath(start, setOf(start))
+    return findPath(start, listOf(start))
 }
