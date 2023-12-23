@@ -110,8 +110,8 @@ fun solvePart2(input: List<String>): Int {
                 queue.add(from to 0)
                 while (queue.isNotEmpty()) {
                     val (current, distance) = queue.removeFirst()
-                    current.adjacent(false)
-                        .filter { trail.contains(it) && !visited.contains(it) }.forEach {
+                    current.adjacent(false).filter { trail.contains(it) && !visited.contains(it) }
+                        .forEach {
                             visited.add(it)
                             if (pointsToRemember.contains(it)) {
                                 // This is a distance worth remembering
