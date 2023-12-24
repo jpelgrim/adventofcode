@@ -4,6 +4,7 @@ import util.println
 import util.readLines
 import java.io.File
 import java.math.BigDecimal
+import java.math.BigDecimal.ZERO
 
 private const val DAY = "day24" // https://adventofcode.com/2023/day/24
 
@@ -14,8 +15,13 @@ fun main() {
 fun solveDay24() {
     val input = "$DAY/input_example.txt".readLines()
     val stones = input.map { line ->
-        line.split(" @ ".toRegex()).map { it.split(", ").map { n -> n.trim().toBigDecimal() } }
-            .map { Point(it[0], it[1], it[2]) }
+        line.split(" @ ").map {
+            it.split(", ").map { n ->
+                n.trim().toBigDecimal()
+            }
+        }.map {
+            Point(it[0], it[1], it[2])
+        }
     }
     var solutionPart1 = 0
     val low = BigDecimal(7)
@@ -93,11 +99,7 @@ data class Point(val x: BigDecimal, val y: BigDecimal, val z: BigDecimal) {
 }
 
 fun inTheFuture(stone: List<Point>, intersection: Point) =
-    (((stone[1].x > BigDecimal(0) && intersection.x > stone[0].x) || (stone[1].x < BigDecimal(0) && intersection.x < stone[0].x) && ((stone[1].y > BigDecimal(
-        0
-    ) && intersection.y > stone[0].y) || (stone[1].y < BigDecimal(
-        0
-    ) && intersection.y < stone[0].y))))
+    ((((stone[1].x > ZERO && intersection.x > stone[0].x) || (stone[1].x < ZERO && intersection.x < stone[0].x)) && (((stone[1].y > ZERO && intersection.y > stone[0].y) || (stone[1].y < ZERO && intersection.y < stone[0].y)))))
 
 fun line(p1: Point, p2: Point): List<BigDecimal> {
     val a = p1.y - p2.y
@@ -110,10 +112,10 @@ fun intersection(l1: List<BigDecimal>, l2: List<BigDecimal>): Point {
     val d = l1[0] * l2[1] - l1[1] * l2[0]
     val dX = l1[2] * l2[1] - l1[1] * l2[2]
     val dY = l1[0] * l2[2] - l1[2] * l2[0]
-    if (d != BigDecimal(0)) {
+    if (d != ZERO) {
         val x = dX / d
         val y = dY / d
-        return Point(x, y, BigDecimal(0))
+        return Point(x, y, ZERO)
     } else {
         throw ArithmeticException("Lines do not intersect")
     }
