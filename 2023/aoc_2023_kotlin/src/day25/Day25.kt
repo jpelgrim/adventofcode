@@ -25,12 +25,12 @@ fun solveDay25() {
         }
     }
 
-    val nodeList = graph.toList()
+    val nodes = graph.toList()
     val traversedEdges = mutableMapOf<Pair<String, String>, Int>()
     val rand = Random(12345)
     repeat (260) {
-        val from = nodeList.random(rand)
-        val to = nodeList.random(rand)
+        val from = nodes.random(rand)
+        val to = nodes.random(rand)
         if (from != to) {
             from.findRandomPath(to, rand).forEach {
                 traversedEdges[it] = 1 + (traversedEdges[it] ?: 0)
