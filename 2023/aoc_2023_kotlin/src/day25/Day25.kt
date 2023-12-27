@@ -11,7 +11,7 @@ fun main() {
 }
 
 fun solveDay25() {
-    val input = "$DAY/input.txt".readLines()
+    val input = "$DAY/input_example.txt".readLines()
 
     val graph = mutableSetOf<Node>()
 
