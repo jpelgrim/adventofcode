@@ -67,18 +67,18 @@ class Node(val id: String, val adjacencies: MutableSet<Node> = mutableSetOf()) {
 
     fun findRandomPath(dest: Node, random: Random): Set<Edge> {
         val visited: MutableSet<Node> = mutableSetOf()
-        val recursive = DeepRecursiveFunction<SearchState, Set<Edge>> { searchState ->
-            if (!visited.add(searchState.source)) return@DeepRecursiveFunction emptySet()
+        fun recursive (searchState: SearchState): Set<Edge> {
+            if (!visited.add(searchState.source)) return emptySet()
             for (next in searchState.source.adjacencies.shuffled(random)) {
                 if (next in visited) continue
-                if (next == dest || callRecursive(searchState.copy(source = next)).isNotEmpty()) {
+                if (next == dest || recursive(searchState.copy(source = next)).isNotEmpty()) {
                     searchState.path += createUndirectedEdge(searchState.source, next)
                     break
                 }
             }
-            return@DeepRecursiveFunction searchState.path
+            return searchState.path
         }
-        return recursive.invoke(SearchState(this))
+        return recursive(SearchState(this))
     }
 
     private data class SearchState(
