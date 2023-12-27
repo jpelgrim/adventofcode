@@ -17,9 +17,9 @@ fun solveDay25() {
 
     input.forEach {line ->
         val (source, adjacencies) = line.split(": ")
-        val sourceNode = graph.getOrNew(source)
+        val sourceNode = graph.getOrPut(source)
         adjacencies.split(" ").forEach { dest ->
-            val destNode = graph.getOrNew(dest)
+            val destNode = graph.getOrPut(dest)
             destNode.adjacencies.add(sourceNode)
             sourceNode.adjacencies.add(destNode)
         }
@@ -39,16 +39,16 @@ fun solveDay25() {
     }
 
     val mostTraversedEdges = traversedEdges.toList().sortedByDescending { it.second }
-    mostTraversedEdges.take(3).forEach { (edge, _) -> graph.getOrNew(edge.first).removeAdjacency(graph.getOrNew(edge.second)) }
+    mostTraversedEdges.take(3).forEach { (edge, _) -> graph.getOrPut(edge.first).removeAdjacency(graph.getOrPut(edge.second)) }
 
-    val ball1 = graph.getOrNew(mostTraversedEdges[0].first.first).bfs().size
+    val ball1 = graph.getOrPut(mostTraversedEdges[0].first.first).bfs().size
     val total = graph.size
     val solutionPart1 = ball1 * (total - ball1)
 
     "The solution for $DAY is: $solutionPart1".println()
 }
 
-private fun MutableSet<Node>.getOrNew(id: String) = firstOrNull { it.id == id } ?: Node(id).also { this.add(it) }
+private fun MutableSet<Node>.getOrPut(id: String) = firstOrNull { it.id == id } ?: Node(id).also { this.add(it) }
 
 class Node(val id: String, val adjacencies: MutableSet<Node> = mutableSetOf()) {
     fun removeAdjacency(node: Node) {
