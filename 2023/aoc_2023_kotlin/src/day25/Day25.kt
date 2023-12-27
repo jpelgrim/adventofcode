@@ -66,25 +66,24 @@ class Node(val id: String, val adjacencies: MutableSet<Node> = mutableSetOf()) {
     private fun createUndirectedEdge(n1: Node, n2: Node): Edge = Edge(minOf(n1.id, n2.id), maxOf(n1.id, n2.id))
 
     fun findPath(dest: Node, random: Random): Set<Edge> {
-        val recursive = DeepRecursiveFunction<SearchState, Set<Edge>> { args ->
-            if (!args.visited.add(args.source)) return@DeepRecursiveFunction emptySet()
-            for (next in args.source.adjacencies.shuffled(random)) {
-                if (next in args.visited) continue
-                if (next == dest || callRecursive(args.copy(source = next)).isNotEmpty()) {
-                    args.path += createUndirectedEdge(args.source, next)
+        val visited: MutableSet<Node> = mutableSetOf()
+        val recursive = DeepRecursiveFunction<SearchState, Set<Edge>> { searchState ->
+            if (!visited.add(searchState.source)) return@DeepRecursiveFunction emptySet()
+            for (next in searchState.source.adjacencies.shuffled(random)) {
+                if (next in visited) continue
+                if (next == dest || callRecursive(searchState.copy(source = next)).isNotEmpty()) {
+                    searchState.path += createUndirectedEdge(searchState.source, next)
                     break
                 }
             }
-            return@DeepRecursiveFunction args.path
+            return@DeepRecursiveFunction searchState.path
         }
-        return recursive.invoke(SearchState(this, dest))
+        return recursive.invoke(SearchState(this))
     }
 
     private data class SearchState(
         val source: Node,
-        val destination: Node,
         val path: MutableSet<Edge> = mutableSetOf(),
-        val visited: MutableSet<Node> = mutableSetOf()
     )
 
     override fun equals(other: Any?): Boolean = other is Node && id == other.id
