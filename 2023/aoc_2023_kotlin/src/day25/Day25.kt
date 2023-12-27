@@ -28,7 +28,7 @@ fun solveDay25() {
     val nodeList = graph.toList()
     val traversedEdges = mutableMapOf<Edge, Int>()
     val rand = Random(12345)
-    repeat (500) {
+    repeat (260) {
         val from = nodeList.random(rand)
         val to = nodeList.random(rand)
         if (from != to) {
