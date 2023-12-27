@@ -32,7 +32,7 @@ fun solveDay25() {
         val from = nodeList.random(rand)
         val to = nodeList.random(rand)
         if (from != to) {
-            from.findPath(to, rand).forEach {
+            from.findRandomPath(to, rand).forEach {
                 traversedEdges[it] = 1 + (traversedEdges[it] ?: 0)
             }
         }
@@ -65,7 +65,7 @@ class Node(val id: String, val adjacencies: MutableSet<Node> = mutableSetOf()) {
 
     private fun createUndirectedEdge(n1: Node, n2: Node): Edge = Edge(minOf(n1.id, n2.id), maxOf(n1.id, n2.id))
 
-    fun findPath(dest: Node, random: Random): Set<Edge> {
+    fun findRandomPath(dest: Node, random: Random): Set<Edge> {
         val visited: MutableSet<Node> = mutableSetOf()
         val recursive = DeepRecursiveFunction<SearchState, Set<Edge>> { searchState ->
             if (!visited.add(searchState.source)) return@DeepRecursiveFunction emptySet()
