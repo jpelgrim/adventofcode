@@ -26,7 +26,7 @@ fun solveDay25() {
     }
 
     val nodeList = graph.toList()
-    val traversedEdges = mutableMapOf<Edge, Int>()
+    val traversedEdges = mutableMapOf<Pair<String, String>, Int>()
     val rand = Random(12345)
     repeat (260) {
         val from = nodeList.random(rand)
@@ -39,9 +39,9 @@ fun solveDay25() {
     }
 
     val mostTraversedEdges = traversedEdges.toList().sortedByDescending { it.second }
-    mostTraversedEdges.take(3).forEach { (edge, _) -> graph.getOrNew(edge.from).removeAdjacency(graph.getOrNew(edge.to)) }
+    mostTraversedEdges.take(3).forEach { (edge, _) -> graph.getOrNew(edge.first).removeAdjacency(graph.getOrNew(edge.second)) }
 
-    val ball1 = graph.getOrNew(mostTraversedEdges[0].first.from).bfs().size
+    val ball1 = graph.getOrNew(mostTraversedEdges[0].first.first).bfs().size
     val total = graph.size
     val solutionPart1 = ball1 * (total - ball1)
 
@@ -63,11 +63,11 @@ class Node(val id: String, val adjacencies: MutableSet<Node> = mutableSetOf()) {
         return result
     }
 
-    private fun createUndirectedEdge(n1: Node, n2: Node): Edge = Edge(minOf(n1.id, n2.id), maxOf(n1.id, n2.id))
+    private fun createUndirectedEdge(n1: Node, n2: Node) = minOf(n1.id, n2.id) to maxOf(n1.id, n2.id)
 
-    fun findRandomPath(dest: Node, random: Random): Set<Edge> {
+    fun findRandomPath(dest: Node, random: Random): Set<Pair<String, String>> {
         val visited: MutableSet<Node> = mutableSetOf()
-        fun recursive (searchState: SearchState): Set<Edge> {
+        fun recursive (searchState: SearchState): Set<Pair<String, String>> {
             if (!visited.add(searchState.source)) return emptySet()
             for (next in searchState.source.adjacencies.shuffled(random)) {
                 if (next in visited) continue
@@ -83,13 +83,10 @@ class Node(val id: String, val adjacencies: MutableSet<Node> = mutableSetOf()) {
 
     private data class SearchState(
         val source: Node,
-        val path: MutableSet<Edge> = mutableSetOf(),
+        val path: MutableSet<Pair<String, String>> = mutableSetOf(),
     )
 
     override fun equals(other: Any?): Boolean = other is Node && id == other.id
 
     override fun hashCode(): Int = id.hashCode()
 }
-
-
-data class Edge(val from: String, val to: String)
