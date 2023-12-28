@@ -10,7 +10,7 @@ fun main() {
 }
 
 fun solveDay15() {
-    val exampleInput = "$DAY/input_example.txt".readText().split(",")
+    val exampleInput = "y2023/$DAY/input_example.txt".readText().split(",")
     val solutionPart1 = solvePart1(exampleInput)
     check(solutionPart1 == 1320)
     "The solution for $DAY part1 is: $solutionPart1".println()

@@ -11,11 +11,11 @@ fun main() {
 }
 
 fun solveDay8() {
-    val inputPart1 = "$DAY/input_example.txt".readLines()
+    val inputPart1 = "y2023/$DAY/input_example.txt".readLines()
     check(solvePart1(inputPart1) == 6)
     "The solution for $DAY part1 is: ${solvePart1(inputPart1)}".println()
 
-    val inputPart2 = "$DAY/input_example2.txt".readLines()
+    val inputPart2 = "y2023/$DAY/input_example2.txt".readLines()
     check(solvePart2(inputPart2) == 6L)
     "The solution for $DAY part2 is: ${solvePart2(inputPart2)}".println()
 }
