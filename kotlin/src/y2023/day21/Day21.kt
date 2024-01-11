@@ -92,18 +92,21 @@ fun solveDay21() {
         }
     }
 
-    // Size of repeating block pattern 1
-    val sizePattern1 = block1Size + block2Size
-    // Size of repeating block pattern 2
-    val sizePattern2 = sizeAtStep197 - sizePattern1 - diamondShapeSize
+    // Nice explanation of the geometry of what's defined below here:
+    // https://github.com/villuna/aoc23/wiki/A-Geometric-solution-to-advent-of-code-2023,-day-21
+
+    // Size of repeating odd block pattern
+    val oddPatternSize = block1Size + block2Size
+    // Size of repeating even block pattern
+    val evenPatternSize = sizeAtStep197 - oddPatternSize - diamondShapeSize
     // Radius of the diamond shape, in original numbers of original block sizes
     val radius = 26501365 / 131L
-    // The first block pattern is repeated radius * radius times
-    val totalBlockPattern1Size = sizePattern1 * radius * radius
-    // The second block pattern is repeated radius times
-    val totalBlockPattern2Size = sizePattern2 * radius
+    // The odd block pattern is repeated radius * radius times (see explanation in link above)
+    val totalOddPatternSize = oddPatternSize * radius * radius
+    // The even block pattern is repeated radius times (see explanation in link above)
+    val totalEvenPatternSize = evenPatternSize * radius
     // We also need to add the diamond shape size itself to the result
-    val solutionPart2 = totalBlockPattern1Size + totalBlockPattern2Size + diamondShapeSize
+    val solutionPart2 = totalOddPatternSize + totalEvenPatternSize + diamondShapeSize
     check(solutionPart2 == 630129824772393L)
     "The solution for $DAY part2 is: $solutionPart2".println()
 }
