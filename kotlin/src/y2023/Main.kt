@@ -1,3 +1,5 @@
+package y2023
+
 import y2023.day01.solveDay1
 import y2023.day02.solveDay2
 import y2023.day03.solveDay3
