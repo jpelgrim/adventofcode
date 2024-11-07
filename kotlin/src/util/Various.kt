@@ -11,8 +11,8 @@ fun String.readLines(): List<String> {
 }
 
 private fun String.croakIfUsingSampleInput() {
-    if (contains("example")) {
-        "⚠️ WARNING 🧝‍ YOU ARE USING EXAMPLE INPUT‼️☠️".println()
+    if (contains("ample")) {
+        "⚠️ WARNING 🧝‍ YOU ARE USING SAMPLE INPUT‼️☠️".println()
     }
 }
 
@@ -40,6 +40,16 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
  */
 fun Any?.println() = println(this)
 
+/**
+ * Transposes a matrix of characters, represented as a list of strings.
+ *
+ * Example:
+ * listOf("123", "456", "789").transposed()
+ *
+ * Output:
+ * ["147", "258", "369"]
+ *
+ */
 fun List<String>.transposed() = first().indices.map {
     buildString { for (line in this@transposed) append(line[it]) }
 }
