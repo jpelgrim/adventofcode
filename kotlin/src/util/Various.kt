@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package util
 
 import java.io.File
@@ -5,6 +6,7 @@ import java.math.BigInteger
 import java.security.MessageDigest
 
 fun String.readLines(): List<String> {
+    "Reading file: $this".println()
     croakIfUsingSampleInput()
 
     return File("src", this).readLines()
@@ -53,3 +55,12 @@ fun Any?.println() = println(this)
 fun List<String>.transposed() = first().indices.map {
     buildString { for (line in this@transposed) append(line[it]) }
 }
+
+fun <T> List<List<T>>.flipped() = first().indices.map {
+    buildList<T> { for (item in this@flipped) add(item[it]) }
+}
+
+fun String.ints() = Regex("""-?\d+""").findAll(this).map { it.value.toInt() }.toList()
+fun String.longs() = Regex("""-?\d+""").findAll(this).map { it.value.toLong() }.toList()
+
+fun List<String>.ints() = map { it.ints() }
