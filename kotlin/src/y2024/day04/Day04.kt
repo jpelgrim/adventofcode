@@ -10,7 +10,7 @@ fun main() {
     solveDay4()
 }
 
-private fun solveDay4() {
+fun solveDay4() {
     val lines = "y2024/$DAY/sample.txt".readLines()
     solvePart1(lines)
     solvePart2(lines)

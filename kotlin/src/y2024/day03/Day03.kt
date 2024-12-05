@@ -9,7 +9,7 @@ fun main() {
     solveDay3()
 }
 
-private fun solveDay3() {
+fun solveDay3() {
     solvePart1()
     solvePart2()
 }
