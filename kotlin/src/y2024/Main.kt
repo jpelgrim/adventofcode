@@ -9,6 +9,7 @@ import y2024.day05.solveDay5
 import y2024.day06.solveDay6
 import y2024.day07.solveDay7
 import y2024.day08.solveDay8
+import y2024.day09.solveDay9
 import kotlin.time.measureTime
 
 private val solvers = listOf(
@@ -20,6 +21,7 @@ private val solvers = listOf(
     { solveDay6() },
     { solveDay7() },
     { solveDay8() },
+    { solveDay9() },
 )
 
 fun main() = solvers.forEachIndexed { index, solver ->
