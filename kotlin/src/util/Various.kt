@@ -63,4 +63,8 @@ fun <T> List<List<T>>.flipped() = first().indices.map {
 fun String.ints() = Regex("""-?\d+""").findAll(this).map { it.value.toInt() }.toList()
 fun String.longs() = Regex("""-?\d+""").findAll(this).map { it.value.toLong() }.toList()
 
+// When the input is a single line of numbers
+fun String.singleInts() = Regex("""\d""").findAll(this).map { it.value.toInt() }.toList()
+fun String.singleLongs() = Regex("""\d""").findAll(this).map { it.value.toLong() }.toList()
+
 fun List<String>.ints() = map { it.ints() }
