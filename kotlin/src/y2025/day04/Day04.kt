@@ -5,7 +5,7 @@ import util.println
 import util.readLines
 import util.verify
 
-private const val DAY = "day04" // https://adventofcode.com/2025/day/3
+private const val DAY = "day04" // https://adventofcode.com/2025/day/4
 
 fun main() {
     solveDay4()
